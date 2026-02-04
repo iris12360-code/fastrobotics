@@ -245,25 +245,45 @@ class CMD(Enum):
 <img src="../images/lab1/get_time.png" alt="echo result" width="550">
 
     <h3>Task 4</h3>
-    <p>...</p>
-<div class="code-block">
-  <div class="code-header">Serial Monitor</div>
-  <pre><code>
-Advertising BLE with MAC: c0:81:b1:24:23:64
-Connected to: a0:59:50:7b:9a:61
-Three floats: 123.400, 3.112, -0.956
-  </code></pre>
-</div>    
-    <h3>Task 5</h3>
-    <p>...</p>
+    <p>The notification handler is very interesting: it is a callback, which means it won't work until
+        BLE sends out data. Itself inside converts bytes to string to integer, while when it is called by
+    start_notify it puts notification handler on hold waiting for data. I wasn't understanding why send_command
+has to be behind start_notify: command cannot be sent before the notification is on, or handler won't react.  </p>
 
     <div class="code-block">
+  <div class="code-header">Demo.ipynb</div>
+  <pre><code>
+def notification_handler(send, byte_array):
+    time_str = ble.bytearray_to_string(byte_array)
+    time_int = int(time_str.split(":")[1])
+    print (time_int)
+
+ble.start_notify(ble.uuid["RX_STRING"], notification_handler)
+ble.send_command(CMD.GET_TIME_MILLIS, "")
+  </code></pre>
+</div> 
+<p>The callback function here automatically takes output from Task 3. I do not necessarily
+    need to fill in "send" / "byte_array" as python fills the augments from BLE library. 
+    </p>
+<div class="code-block">
   <div class="code-header">Serial Monitor</div>
   <pre><code>
 Sent: T:64593.000
 Sent: T:82556.000
 Sent: T:115553.000
 Sent: T:143196.000
+  </code></pre>
+</div>    
+
+
+
+    <h3>Task 5</h3>
+    <p>...</p>
+
+    <div class="code-block">
+  <div class="code-header">Serial Monitor</div>
+  <pre><code>
+
   </code></pre>
 </div>
 
