@@ -94,6 +94,9 @@ code {
     <h2>Lab 1b</h2>
     <p>In lab 1b, </p>
     <h3>Prelab</h3>
+    <p>I spent decent time debuging the error when updating Artemis MAC address. One error is that 
+    Arduino library folder actually saved both on Onedrive and locally on laptop in which case placment
+    of "Sketchbook" in Onedrive potentially caused the conflicts.</p>
     <div class="code-block">
   <div class="code-header">File: <span>Serial Monitor</span></div>
   <pre><code>
@@ -103,7 +106,37 @@ code {
 
     <img src="../images/lab1/.png" alt="serial failed" width="550">
     <h3>Task 1</h3>
+    <p>...</p>
+    <div class="code-block">
+  <div class="code-header">File: <span>Demo.ipynb</span></div>
+  <pre><code>
+    ble.uuid
+    e = ble.receive_string(ble.uuid["RX_STRING"])
+    print(e)
+  </code></pre>
+</div>
 
+    <div class="code-block">
+  <div class="code-header">File: <span>ble_arduino.ino</span></div>
+  <pre><code>
+    case ECHO:
+
+            char char_arr[MAX_MSG_SIZE];
+
+            // Extract the next value from the command string as a character array
+            success = robot_cmd.get_next_value(char_arr);
+            if (!success)
+                return;  
+            tx_estring_value.clear();
+            tx_estring_value.append("Robot says -> ");
+            tx_estring_value.append(char_arr);
+            tx_estring_value.append(":)");
+            tx_characteristic_string.writeValue(tx_estring_value.c_str());
+
+            break;
+
+  </code></pre>
+</div>
     <h3>Task 2</h3>
     <h3>Task 3</h3>
     <h3>Task 4</h3>
