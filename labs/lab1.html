@@ -73,7 +73,7 @@ code {
   Watch the video
 </a>
     <h3>Serial</h3>
-    <img src="../images/lab1/Serial.png" alt="serial code" width="550">
+    <img src="../images/lab1/serial.png" alt="serial failed" width="550">
     <p>Serial communication requires consistent baud rate ebtween transmitter and receiver to 
     ensure its accuracy. As picture below shown, it failed once I change baud rate to an
     inconsistent value of 38400 baud. </p>
@@ -92,7 +92,9 @@ code {
     </p>
 
     <h2>Lab 1b</h2>
-    <p>In lab 1b, </p>
+    <p>In lab 1b, I implemented and tested a couple customed BLE commands to achieve data
+        exchange using GATT characterisitics.  
+         </p>
     <h3>Prelab</h3>
     <p>I spent decent time debuging the error when updating Artemis MAC address. One error is that 
     Arduino library folder actually saved both on Onedrive and locally on laptop in which case placment
@@ -247,7 +249,7 @@ class CMD(Enum):
     <h3>Task 4</h3>
     <p>The notification handler is very interesting: it is a callback, which means it won't work until
         BLE sends out data. Itself inside converts bytes to string to integer, while when it is called by
-    start_notify it puts notification handler on hold waiting for data. I wasn't understanding why send_command
+    start_notify it puts notification handler on hold waiting for data. I now understand why send_command
 has to be behind start_notify: command cannot be sent before the notification is on, or handler won't react.  </p>
 
     <div class="code-block">
@@ -275,17 +277,47 @@ Sent: T:143196.000
   </code></pre>
 </div>    
 
-
-
     <h3>Task 5</h3>
-    <p>...</p>
+    <p>To estimate effective data transfer rate, I applied delay(20) to slow down the prcoess.
+        I set the loop to collect until time reaches one second. I still received 85 messages as some
+        of the delay may be not applied. 
+    </p>
+
+    <div class="code-block">
+  <div class="code-header">cmd_types.py</div>
+  <pre><code>
+class CMD(Enum):
+    ...
+    LOOP_GETTIME = 7
+  </code></pre>
+</div>
 
     <div class="code-block">
   <div class="code-header">Serial Monitor</div>
   <pre><code>
+    case LOOP_GETTIME:
+               
+            double t_i, t_o;
+            t_i = millis();
+            while (millis() - t_i < 1000)
+            {
+                tx_estring_value.clear();
+                tx_estring_value.append("T:");
+                t_o = millis();
+                tx_estring_value.append(t_o);
+                tx_characteristic_string.writeValue(tx_estring_value.c_str());
 
+
+                delay(20);
+            }
+            break;
   </code></pre>
 </div>
+
+<img src="../images/lab1/loop_time.png" alt="echo result" width="550">
+    <p>Since each message is 13 bytes, so by calculation the data transfer rate would 
+        be 85*13/1 = 1105 bytes/s = 8840 bits/s
+    </p>
 
     <h3>Task 6</h3>
 
@@ -298,9 +330,7 @@ Sent: T:143196.000
     <div class="code-block">
   <div class="code-header">Serial Monitor</div>
   <pre><code>
-Advertising BLE with MAC: c0:81:b1:24:23:64
-Connected to: a0:59:50:7b:9a:61
-Three floats: 123.400, 3.112, -0.956
+
   </code></pre>
 </div>
 
@@ -314,8 +344,10 @@ Three floats: 123.400, 3.112, -0.956
 
     <h3>Acknowledgement</h3>
     <p>Thanks to Michelle Yang for answering my question about Task 4 streamlines of notification
-        handler. I referenced Trevor's and Jeffery's wesbite from last year about building
-        command-handling and response construction and the formatting. 
+        handler. 
+        I referenced Trevor's and Jeffery's wesbite from last year about building
+        command-handling and response construction and the formatting. I also used Generative AI
+        ChatGPT for general debuging, error message analysis, and webpage writing.  
     </p>
   </div>
 </body>
