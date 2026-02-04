@@ -108,7 +108,8 @@ code {
     <p>Echo is conducted in two steps: first, send one string over
          BLE to the characteristic on Artemis; second,  
          have the laptop receive the response. BLE characteristics are basically the container
-         of the data which can be identified by UUID. </p>
+         of the data which can be identified by UUID. I used case PING to construct this response.
+         </p>
     <div class="code-block">
   <div class="code-header">File: <span>Demo.ipynb</span></div>
   <pre><code>
@@ -125,7 +126,6 @@ code {
 
             char char_arr[MAX_MSG_SIZE];
 
-            // Extract the next value from the command string as a character array
             success = robot_cmd.get_next_value(char_arr);
             if (!success)
                 return;  
@@ -136,16 +136,89 @@ code {
             tx_characteristic_string.writeValue(tx_estring_value.c_str());
 
             break;
+</code></pre>
+</div>
+
+    <img src="../images/lab1/Echo.png" alt="echo result" width="550">
+
+    <h3>Task 2</h3>
+    <p>I referred to case SEND_TWO_INTS. However, the output in Arduino cut off some digits. Therefore,
+        I <a href="https://arduino.stackexchange.com/questions/42965/only-2-decimal-places-in-printed-float" target="_blank">
+    secured three digits as necessary </a> so that my floats can be accurate as bottom one shown. 
+    </p>
+
+        <div class="code-block">
+  <div class="code-header">File: <span>ble_arduino.ino</span></div>
+  <pre><code>
+        case SEND_THREE_FLOATS:
+            /*
+             * Your code goes here.
+             */
+            float flt_a, flt_b, flt_c;
+            success = robot_cmd.get_next_value(flt_a);
+            if(!success)
+                return;
+
+
+            success = robot_cmd.get_next_value(flt_b);
+            if(!success)
+                return;
+
+
+            success = robot_cmd.get_next_value(flt_c);
+            if(!success)
+                return;
+
+
+            Serial.print("Three floats: ");
+            Serial.print(flt_a);
+            Serial.print(", ");
+            Serial.print(flt_b);
+            Serial.print(", ");
+            Serial.println(flt_c);
+
+            break;
 
   </code></pre>
 </div>
-    <h3>Task 2</h3>
+
+<div class="code-block">
+  <div class="code-header">File: Demo.ino</div>
+  <pre><code>
+ble_Echo.send_command(CMD.SEND_THREE_FLOATS, "123.4:3.112:-0.956")
+  </code></pre>
+</div>
+
+<div class="code-block">
+  <div class="code-header">Serial Monitor</div>
+  <pre><code>
+Advertising BLE with MAC: c0:81:b1:24:23:64
+Connected to: a0:59:50:7b:9a:61
+Three floats: 123.40, 3.11, -0.96
+  </code></pre>
+</div>
+
+<div class="code-block">
+  <div class="code-header">Serial Monitor</div>
+  <pre><code>
+Advertising BLE with MAC: c0:81:b1:24:23:64
+Connected to: a0:59:50:7b:9a:61
+Three floats: 123.400, 3.112, -0.956
+  </code></pre>
+</div>
+
+
     <h3>Task 3</h3>
     <h3>Task 4</h3>
     <h3>Task 5</h3>
     <h3>Task 6</h3>
 
     <p>...</p>
+
+<div class="code-block">
+  <div class="code-header">File: main.ino</div>
+  <pre><code>...</code></pre>
+</div>
 
 
     <h3>Acknowledgement</h3>
