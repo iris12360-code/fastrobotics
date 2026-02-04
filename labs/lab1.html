@@ -136,10 +136,10 @@ code {
             tx_characteristic_string.writeValue(tx_estring_value.c_str());
 
             break;
-</code></pre>
-</div>
+    </code></pre>
+    </div>
 
-    <img src="../images/lab1/Echo.png" alt="echo result" width="550">
+<img src="../images/lab1/echo.png" alt="echo result" width="550">
 
     <h3>Task 2</h3>
     <p>I referred to case SEND_TWO_INTS. However, the output in Arduino cut off some digits. Therefore,
@@ -185,7 +185,7 @@ code {
 <div class="code-block">
   <div class="code-header">File: Demo.ino</div>
   <pre><code>
-ble_Echo.send_command(CMD.SEND_THREE_FLOATS, "123.4:3.112:-0.956")
+ble.send_command(CMD.SEND_THREE_FLOATS, "123.4:3.112:-0.956")
   </code></pre>
 </div>
 
@@ -209,9 +209,81 @@ Three floats: 123.400, 3.112, -0.956
 
 
     <h3>Task 3</h3>
+    <p>...</p>
+
+    <div class="code-block">
+  <div class="code-header">cmd_types.py</div>
+  <pre><code>
+class CMD(Enum):
+    ...
+    GET_TIME_MILLIS = 6 
+  </code></pre>
+</div> 
+
+    <div class="code-block">
+  <div class="code-header">File:ble_arduino.ino</div>
+  <pre><code>
+        case GET_TIME_MILLIS:
+            int int_c;
+
+            success = robot_cmd.get_next_value(int_c);
+            if (!success)
+                return;
+
+
+            tx_estring_value.clear();
+            tx_estring_value.append("T:");
+            tx_estring_value.append(millis());
+            tx_characteristic_string.writeValue(tx_estring_value.c_str());
+
+            Serial.print("Sent: ");
+            Serial.println(tx_estring_value.c_str());
+
+            break;
+  </code></pre>
+</div>
+
+<img src="../images/lab1/get_time.png" alt="echo result" width="550">
+
     <h3>Task 4</h3>
+
+<div class="code-block">
+  <div class="code-header">Serial Monitor</div>
+  <pre><code>
+Advertising BLE with MAC: c0:81:b1:24:23:64
+Connected to: a0:59:50:7b:9a:61
+Three floats: 123.400, 3.112, -0.956
+  </code></pre>
+</div>    
     <h3>Task 5</h3>
+
+
+    <div class="code-block">
+  <div class="code-header">Serial Monitor</div>
+  <pre><code>
+Sent: T:64593.000
+Sent: T:82556.000
+Sent: T:115553.000
+Sent: T:143196.000
+  </code></pre>
+</div>
+
     <h3>Task 6</h3>
+
+
+
+
+
+
+
+    <div class="code-block">
+  <div class="code-header">Serial Monitor</div>
+  <pre><code>
+Advertising BLE with MAC: c0:81:b1:24:23:64
+Connected to: a0:59:50:7b:9a:61
+Three floats: 123.400, 3.112, -0.956
+  </code></pre>
+</div>
 
     <p>...</p>
 
