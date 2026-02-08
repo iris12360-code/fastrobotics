@@ -235,7 +235,7 @@ class CMD(Enum):
             tx_estring_value.clear();
             tx_estring_value.append("T:");
             tx_estring_value.append(millis());
-            tx_characteristic_string.writeValue((double)tx_estring_value.c_str());
+            tx_characteristic_string.writeValue(tx_estring_value.c_str());
 
             Serial.print("Sent: ");
             Serial.println(tx_estring_value.c_str());
@@ -321,26 +321,70 @@ class CMD(Enum):
 
     <h3>Task 6</h3>
 
-
-
-
-
-
+<p>It asks the time stamps stored to an array and requires a command to loop the array 
+    and send data points as string. First, I built an array that collects data with a load
+     of 200. A boolean is used to prevent filling in the array when it is full. </p>
 
     <div class="code-block">
   <div class="code-header">Serial Monitor</div>
   <pre><code>
 
+bool capacity_full = false;
+void send_timestamp(unsigned long t){
+    if (time_count < capacity_time) {
+        time_box[time_count] =t;
+        time_count++;
+        // else it will stop collecting
+    }
+    if (time_count == capacity_time){
+        capacity_full = true;
+        Serial.println("Timestamp capacity full");
+    }
+}
+
   </code></pre>
 </div>
 
-    <p>...</p>
+    <p>Besides, I also wrote SEND_TIME_DATA to request a board to send collected timestamps.
+         The board would go through each timestamp in time_box to send them as strings. 
+        In Python, I used a notification handler to prepare to receive and process timestamps. </p>
+
+<div class="code-block">
+  <div class="code-header">File: main.ino</div>
+  <pre><code>
+        case SEND_TIME_DATA:
+            Serial.println("Send time stamp array!");
+
+
+            for (int i = 0; i < time_count; i++ ){
+                tx_estring_value.clear();
+                tx_estring_value.append("timestamp:");
+                tx_estring_value.append((double)time_box[i]);
+                tx_characteristic_string.writeValue(tx_estring_value.c_str());
+                delay(20);
+             
+            }
+            Serial.println("Finish sending array!");
+            break;
+    
+  </code></pre>
+</div>
+<img src="../images/lab1/time_array.png" alt="echo result" width="550">
+
+
+    <h3>Task 7</h3>
+
+
+
+
+
 
 <div class="code-block">
   <div class="code-header">File: main.ino</div>
   <pre><code>...</code></pre>
 </div>
 
+<p>...</p>
 
     <h3>Acknowledgement</h3>
     <p>Thanks to Michelle Yang for answering my question about Task 4 streamlines of notification
