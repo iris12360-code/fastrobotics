@@ -419,21 +419,29 @@ void send_timestamp(unsigned long t){
 
   </code></pre>
 </div>
-<img src="../images/lab1/temp_array.png" alt="echo result" width="250">
+<img src="../images/lab1/temp_array.png" alt="echo result" width="150">
 
-<div class="code-block">
-  <div class="code-header">File: main.ino</div>
-  <pre><code>...</code></pre>
-</div>
 
-<p>...</p>
+    <h3>Task 8</h3>
+<p>
+    The first method enables the recording and the sending function right
+     following each other; while the second only sends the data until they
+      are all finished collecting. The advantage of the first method is that
+       it has access to time close to the time stamp when it was actually collected. Therefore, it is pretty precise. However, the drawback is that the repeating process of  changing between collecting and sending takes time. 
+</p>
+<p>
+In contrast, the second method sends all collected data together, which can be faster in processing time. Its disadvantage would be that there will be discrepancies between the recorded time and real time, as the delay associated with big quantities of data accumulates easily in this case. The frequency of data collection for the second method would be (37213-37134)/0.2s = 395 Hz. For every message it takes 15 bytes; 384 kB = 393216 bytes;
+Estimated available space for data would be 70%: 393216 * 0.7 = 275251 bytes. In estimation, that would be approximately 18350 samples. 
+
+</p>
 
     <h3>Acknowledgement</h3>
     <p>Thanks to Michelle Yang for answering my question about Task 4 streamlines of notification
-        handler. 
-        I referenced Trevor's and Jeffery's wesbite from last year about building
+        handler. </p>
+
+    <p>I referenced Trevor's and Jeffery's wesbite from last year about building
         command-handling and response construction and the formatting. I also used Generative AI
-        ChatGPT for general debuging, error message analysis, and webpage writing.  
+        ChatGPT for general debuging, error message analysis, and webpage writing.  </p>
     </p>
   </div>
 </body>
