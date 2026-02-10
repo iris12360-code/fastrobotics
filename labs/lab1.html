@@ -249,7 +249,8 @@ class CMD(Enum):
     <h3>Task 4</h3>
     <p>The notification handler is very interesting: it is a callback, which means it won't work until
         BLE sends out data. Itself inside converts bytes to string to integer, while when it is called by
-    start_notify it puts notification handler on hold waiting for data. I now understand why send_command
+    start_notify it puts notification handler on hold waiting for data. The start_notify specifically check
+    check if board (arduino) take the action as ordered from python. I now understand why send_command
 has to be behind start_notify: command cannot be sent before the notification is on, or handler won't react.  </p>
 
     <div class="code-block">
@@ -374,10 +375,55 @@ void send_timestamp(unsigned long t){
 
     <h3>Task 7</h3>
 
+<p>IThis time I want to record both time stamps and temperature on the board and 
+    prepare the function to send them together. On the python side, I modified my
+     notification handler so it can extract the value of temperature from the string too.  </p>
 
+<p>I prepare the function record_two_array to collect the time and temperature data. The process of
+     collecting is continuing under the condition of capacity being not full. </p>
 
+<div class="code-block">
+  <div class="code-header">File: main.ino</div>
+  <pre><code></code></pre>
+</div>
 
+<div class="code-block">
+  <div class="code-header">File: ble_arduino.ino</div>
+  <pre><code>
+    void record_two_array(unsigned long t, float tem){
+    if (count < capacity_time) {
+        time_box[count] =t;
+        temp_box[count] =tem;
+        count++;
+        // else it will stop collecting
+    }
+    if (count == capacity_time){
+        capacity_full = true;
+        Serial.println("Timestamp & Temperature capacity full");
+    }
+}
 
+  </code></pre>
+</div>
+
+<div class="code-block">
+  <div class="code-header">File: demo.ipynb</div>
+  <pre><code>
+    def notification_handler(uuid, byte_array):
+    #print (byte_array)
+    time_str = ble.bytearray_to_string(byte_array)
+    #print (time_str)
+    parts = time_str.split(",")
+    time_value = float(parts[0].split(":")[1])
+    temp_value = float(parts[1].split(":")[1])
+    time_list.append(time_value)
+    temp_list.append(temp_value)
+    for t, temp in zip(time_list, temp_list):
+        print(f"{t}  {temp} \n")
+
+  </code></pre>
+</div>
+<img src="../images/lab1/temp_array.png" alt="echo result" width="550">
 
 <div class="code-block">
   <div class="code-header">File: main.ino</div>
