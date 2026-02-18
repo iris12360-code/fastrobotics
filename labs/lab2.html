@@ -65,7 +65,7 @@ code {
 
     <h2> Set up the IMU </h2>
 
-  <img src="../images/lab2/IMU_setup.jpg" alt="IMU connections" width="150">
+  <img src="../images/lab2/IMU_setup.jpg" alt="IMU connections" width="350">
   <p>I wrote code to alternatively light up the LED twice to mark the starting.
    It lights up first when the connection works at the beginning, so the video includes
     three flashes.</p>
@@ -73,7 +73,7 @@ code {
     <div class="code-block">
   <div class="code-header">File: lab2.ino</div>
   <pre><code>
-      // LED light up two times with an interval of two seconds
+  // LED light up two times with an interval of two seconds
   digitalWrite(LED_BUILTIN, HIGH);
   delay(1000);
   digitalWrite(LED_BUILTIN, LOW);
@@ -84,7 +84,7 @@ code {
   </code></pre>
   </div>
   <a href="https://youtube.com/shorts/_lV_BpnmZKY?si=g9R65DuorTzkpHvX" target="_blank">
-  Watch the video</a>
+  Watch the video of flashing light indicating example code works on IMU</a>
   
   <p>AD0_VAL definition discussion: AD0_VAL represents a constant reflecting the state
      of an ADR jumper. When the ADR 
@@ -93,14 +93,50 @@ code {
    it can enable multiple sensors to be on the same I2C bus. 
 </p>
 
-<img src="../images/lab2/X_axis_rotation.jpg" alt="IMU connections" width="350">
-<img src="../images/lab2/Y_axis_flip.jpg" alt="IMU connections" width="350">
-<img src="../images/lab2/X_axis_speedup.jpg" alt="IMU connections" width="350">
+<img src="../images/lab2/X_axis_rotation.jpg" alt="IMU connections" width="450">
+<img src="../images/lab2/Y_axis_flip.jpg" alt="IMU connections" width="450">
+<img src="../images/lab2/X_axis_speedup.jpg" alt="IMU connections" width="450">
+<p>
+Picture above in order demonstrate rotation along X axis, flip along Y axis,
+ and speedup along X axis. 
+</p>
 
     <h2>Accelerometer </h2>
+<img src="../images/lab2/roll_rawdata.jpg" alt="IMU connections" width="550">
+<img src="../images/lab2/pitch_rawdata.jpg" alt="IMU connections" width="550">
+
+    <div class="code-block">
+  <div class="code-header">File: lab2.ino</div>
+  <pre><code>
+    //Calculation of angles of Pitch/Roll in degrees 
+    acc_roll = atan2(ay, az) * 180.0 / M_PI;
+    acc_pitch = atan2(-ax, sqrt(ay*ay + az*az)) * 180.0 / M_PI;
+  </code></pre>
+  </div>
+
+  <p>
+I directly used data point from output of pitch and roll to conduct the two-point calibration:
+Average Pitch Degrees in negative direction: -86.23 degrees
+Average Pitch Degrees at zero: 0.06 degrees
+Conversion factor: (0-(-90))/(0.06-(-86.23))= 1.043
+Average Roll Degrees in negative direction: -87.66 degrees
+Average Roll Degrees at zero: 0.06 degrees: 0.49 degrees
+Conversion factor: (0-(-90))/(0.49-(-87.66))= 1.021
+Average Conversion Factor: (1.021+1.043)/2 = 1.032
+Therefore, I think my accelerometer is relatively accurate with a 3.2% error.
+</p>
+
+
+
+
+
+
+
     <h2> Gyroscope</h2>
     <h2> Sample Data</h2>
     <h2> Record a Stunt </h2>
+    <a href="https://youtu.be/iNH_kK5zv_E?si=h0ATEQUmRzyzoR_J" target="_blank">
+  Watch the video of RC car exploring its first steps as A RC CAR in Philips hallway</a>
     <h2> Reference </h2>
 
     
