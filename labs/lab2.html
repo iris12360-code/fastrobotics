@@ -63,6 +63,51 @@ code {
 
     <h1>Lab 2: Artemis + Bluetooth </h1>
 
+    <h2> Set up the IMU </h2>
+
+  <img src="../images/lab2/IMU_setup.jpg" alt="IMU connections" width="150">
+  <p>I wrote code to alternatively light up the LED twice to mark the starting.
+   It lights up first when the connection works at the beginning, so the video includes
+    three flashes.</p>
+  
+    <div class="code-block">
+  <div class="code-header">File: lab2.ino</div>
+  <pre><code>
+      // LED light up two times with an interval of two seconds
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(2000);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_BUILTIN, LOW);
+  </code></pre>
+  </div>
+  <a href="https://youtube.com/shorts/_lV_BpnmZKY?si=g9R65DuorTzkpHvX" target="_blank">
+  Watch the video</a>
+  
+  <p>AD0_VAL definition discussion: AD0_VAL represents a constant reflecting the state
+     of an ADR jumper. When the ADR 
+  jumper is open, AD0_VAL should be 1. While the ADR jumper is closed, AD0_VAL should 
+  be 0. It should be 1 now as the ADR jumper is not soldered. If the ADR jumper is soldered,
+   it can enable multiple sensors to be on the same I2C bus. 
+</p>
+
+<img src="../images/lab2/X_axis_rotation.jpg" alt="IMU connections" width="350">
+<img src="../images/lab2/Y_axis_flip.jpg" alt="IMU connections" width="350">
+<img src="../images/lab2/X_axis_speedup.jpg" alt="IMU connections" width="350">
+
+    <h2>Accelerometer </h2>
+    <h2> Gyroscope</h2>
+    <h2> Sample Data</h2>
+    <h2> Record a Stunt </h2>
+    <h2> Reference </h2>
+
+    
+
+
+
+
 
 
 
@@ -75,7 +120,12 @@ code {
   <pre><code>...</code></pre>
 </div>
 
-<p>...</p>
+<p>
+    $\tau = RC = frac{1}{2pif_c} = 0.0637$
+  $\alpha = frac{dt}{tau + dt} = 0.4896 $
+</p>
+
+<p></p>
 
   </div>   
 </body>
