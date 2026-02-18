@@ -102,8 +102,8 @@ Picture above in order demonstrate rotation along X axis, flip along Y axis,
 </p>
 
     <h2>Accelerometer </h2>
-<img src="../images/lab2/roll_rawdata.jpg" alt="IMU connections" width="550">
-<img src="../images/lab2/pitch_rawdata.jpg" alt="IMU connections" width="550">
+<img src="../images/lab2/roll_rawdata.png" alt="IMU connections" width="550">
+<img src="../images/lab2/pitch_rawdata.png" alt="IMU connections" width="550">
 
     <div class="code-block">
   <div class="code-header">File: lab2.ino</div>
@@ -115,15 +115,15 @@ Picture above in order demonstrate rotation along X axis, flip along Y axis,
   </div>
 
   <p>
-I directly used data point from output of pitch and roll to conduct the two-point calibration:
-Average Pitch Degrees in negative direction: -86.23 degrees
-Average Pitch Degrees at zero: 0.06 degrees
-Conversion factor: (0-(-90))/(0.06-(-86.23))= 1.043
-Average Roll Degrees in negative direction: -87.66 degrees
-Average Roll Degrees at zero: 0.06 degrees: 0.49 degrees
-Conversion factor: (0-(-90))/(0.49-(-87.66))= 1.021
-Average Conversion Factor: (1.021+1.043)/2 = 1.032
-Therefore, I think my accelerometer is relatively accurate with a 3.2% error.
+I directly used data point from output of pitch and roll to conduct the two-point calibration:<br>
+Average Pitch Degrees in negative direction: -86.23 degrees<br>
+Average Pitch Degrees at zero: 0.06 degrees<br>
+Conversion factor: (0-(-90))/(0.06-(-86.23))= 1.043<br>
+Average Roll Degrees in negative direction: -87.66 degrees<br>
+Average Roll Degrees at zero: 0.06 degrees: 0.49 degrees<br>
+Conversion factor: (0-(-90))/(0.49-(-87.66))= 1.021<br>
+Average Conversion Factor: (1.021+1.043)/2 = 1.032<br>
+Therefore, I think my accelerometer is relatively accurate with a 3.2% error.<br>
 </p>
 
 
