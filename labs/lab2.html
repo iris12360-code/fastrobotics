@@ -92,7 +92,7 @@ code {
   be 0. It should be 1 now as the ADR jumper is not soldered. If the ADR jumper is soldered,
    it can enable multiple sensors to be on the same I2C bus. 
 </p>
-
+ 
 <img src="../images/lab2/X_axis_rotation.jpg" alt="IMU connections" width="450">
 <img src="../images/lab2/Y_axis_flip.jpg" alt="IMU connections" width="450">
 <img src="../images/lab2/X_axis_speedup.jpg" alt="IMU connections" width="450">
@@ -126,10 +126,49 @@ Average Conversion Factor: (1.021+1.043)/2 = 1.032<br>
 Therefore, I think my accelerometer is relatively accurate with a 3.2% error.<br>
 </p>
 
+<p>
+In the process of ploting and noise analysis in the frequency spectrum, I got to review
+concepts of start_notify and send_command again: start_notify is to have python on to
+listen/wait for arduino actions; seond_command is to have arduino take the action and 
+have notification handler run. Before I started the notification and sent the command,
+ I added clearing to all the lists to ensure they are empty before the calling of the 
+ notification handler. Besides, I added add_list = True to filter out the BLE messages
+  before calling the GET_ACC function from the arduino. 
+</p>
 
+    <div class="code-block">
+  <div class="code-header">File: lab2.ipynb</div>
+  <pre><code>
+  time_list.clear()
+  acc_pitch_list.clear()
+  acc_roll_list.clear()
+  add_list = True 
 
+  ble.start_notify(ble.uuid['RX_STRING'], notification_handler)
+  ble.send_command(CMD_lab2.GET_ACC, "") 
+  </code></pre>
+  </div>
 
+  <img src="../images/lab2/acc_raw_600.png" alt="Raw Data Ploting in size of 600" width="450">
+</p>
+When I left it on the steady table, I did not see some apparent spikes in its distribution
+ of the noise standing out in a specific range of frequency. <br>
 
+However, I can exactly see the difference when I try to shake it at a constant frequency in
+ the time spectrum. In the frequency spectrum, I see obvious peaks between 4-6 Hz despite the
+  spike at 0 Hz for roll. I think it is safe to adopt a cut off frequency at 6Hz, as a low pass 
+  filter will intentionally preserve the low-frequency motion with erasing high-frequency noises.
+   If I pick a lower frequency than that, there will be a chance that the interesting motion 
+   I want to capture will be cut off. Based on my graph, I picked 2.5 Hz as my cut-off frequency.  
+</p>
+  <img src="../images/lab2/acc_low_1000.png" alt="Low-pass Data Ploting in size of 1000" width="450">
+</p>
+A filter at array size of 600 previously would not be able to achieve suppressing noises strongly.
+ The current alpha is 0.4895 with an array size of 1000 compared to previously 0.627, which achieves a
+ a better filter. Throughout the debugging process, I learned to put _static_ inside the function for
+ input angles and checkfirst boolean function to _enables the variables to remember their last values
+  from changes_ inside the function until the next time it runs again.
+</p>
 
 
     <h2> Gyroscope</h2>
