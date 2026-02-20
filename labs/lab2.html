@@ -149,7 +149,7 @@ have notification handler run. Before I started the notification and sent the co
   </code></pre>
   </div>
 
-  <img src="../images/lab2/acc_raw_600.png" alt="Raw Data Ploting in size of 600" width="450">
+  <img src="../images/lab2/acc_raw_600.png" alt="Raw Data Ploting in size of 600" width="650">
 </p>
 When I left it on the steady table, I did not see some apparent spikes in its distribution
  of the noise standing out in a specific range of frequency. <br>
@@ -161,17 +161,20 @@ However, I can exactly see the difference when I try to shake it at a constant f
    If I pick a lower frequency than that, there will be a chance that the interesting motion 
    I want to capture will be cut off. Based on my graph, I picked 2.5 Hz as my cut-off frequency.  
 </p>
-  <img src="../images/lab2/acc_low_1000.png" alt="Low-pass Data Ploting in size of 1000" width="450">
+  <img src="../images/lab2/acc_low_1000.png" alt="Low-pass Data Ploting in size of 1000" width="650">
 </p>
 A filter at array size of 600 previously would not be able to achieve suppressing noises strongly.
  The current alpha is 0.4895 with an array size of 1000 compared to previously 0.627, which achieves a
- a better filter. Throughout the debugging process, I learned to put _static_ inside the function for
- input angles and checkfirst boolean function to _enables the variables to remember their last values
-  from changes_ inside the function until the next time it runs again.
+ a better filter. Throughout the debugging process, I learned to put **static** inside the function for
+ input angles and checkfirst boolean function to **enables the variables to remember their last values
+  from changes** inside the function until the next time it runs again.
 </p>
 
 
-    <h2> Gyroscope</h2>
+  <h2> Gyroscope</h2>
+
+
+
     <h2> Sample Data</h2>
     <h2> Record a Stunt </h2>
     <a href="https://youtu.be/iNH_kK5zv_E?si=h0ATEQUmRzyzoR_J" target="_blank">
