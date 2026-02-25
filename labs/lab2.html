@@ -172,24 +172,55 @@ A filter at array size of 600 previously would not be able to achieve suppressin
 
 
   <h2> Gyroscope</h2>
+ <img src="../images/lab2/gyro_eqn.png" alt="Gyro Angle Equation" width="350">
+
+<p>Delta time is using live time and converting time in milliseconds to seconds.
+   The gyroscope is not reading the angles along three axis like an accelerometer, 
+   instead it is reading the live change rate of angles in units of degrees per second. 
+   The initial angle is defined to be zero in global code. I debugged one point in the
+    code below: previously I had a time difference divided by “1000” instead of  “1000.0.” 
+    Because <code>now<code> and <code>last_ms</code> are both unsigned long/integer
+, the dt would be zero as an integer. Only when dt is a double/floating point number, 
+it is a real, valid value. 
+</p>
+
+
+    <div class="code-block">
+  <div class="code-header">File: lab2.ino</div>
+  <pre><code>
+  void printScaledAGMT(ICM_20948_I2C *sensor)
+  {//looping code is not in the global code because dt needs to be updated
+    unsigned long now = millis(); //live collect a time stamp
+    dt = (now - last_ms) / 1000.0; // unit conversion
+    last_ms = now; // replace the old time stamp with the current time stamp
+  </code></pre>
+  </div>
+<img src="../images/lab2/gyro_data_1.png" alt="Gyro Data" width="650">
+<center> (Data when roll is zero degrees with IMU parallel to table surface）</center>
+<img src="../images/lab2/gyro_data_2.png" alt="Gyro Data" width="650">
+<center>(Data when roll is negative ninety degrees with IMY perpendicular to the table surface)</center>
+<img src="../images/lab2/gyro_data_3.png" alt="Gyro Data" width="650">
+<center>(Data when roll is zero degrees after a long time with error accumulating in gyroscope)</center>
+<p>We can observe there is obvious discrepancy between accelerometer data and gyroscope data. Besides,
+   discrepancy increases as time goes because the calculation for gyroscopes is composed of an 
+   integration of change rate over time. Lower sampling frequency makes the estimation delayed,
+    which can miss the position which changes at higher frequency. </p>
+
+<img src="../images/lab2/gyro_graph.png" alt="Gyro Data" width="650">
 
 
 
-    <h2> Sample Data</h2>
+
+
+
+
+
+
+<h2> Sample Data</h2>
     <h2> Record a Stunt </h2>
     <a href="https://youtu.be/iNH_kK5zv_E?si=h0ATEQUmRzyzoR_J" target="_blank">
   Watch the video of RC car exploring its first steps as A RC CAR in Philips hallway</a>
     <h2> Reference </h2>
-
-    
-
-
-
-
-
-
-
-
 
 
 
