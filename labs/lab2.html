@@ -204,23 +204,50 @@ it is a real, valid value.
 <p>We can observe there is obvious discrepancy between accelerometer data and gyroscope data. Besides,
    discrepancy increases as time goes because the calculation for gyroscopes is composed of an 
    integration of change rate over time. Lower sampling frequency makes the estimation delayed,
-    which can miss the position which changes at higher frequency. </p>
+    which can miss the position which changes at higher frequency.(Below in the pitch graph, purple
+    color marks raw data from accelerometer; orange color marks filtered data from accelerometer;
+    cyan color marks processed data from gyroscope.) </p>
 
-<img src="../images/lab2/gyro_graph.png" alt="Gyro Data" width="650">
+<img src="../images/lab2/gyro_graph.png" alt="Gyro Data" width="350">
+<p>
+For my roll angles, gyroscope captures data far away from my values captured by accelerometer.
+For my pitch angles, gyroscope captures data right in the middle of my fluctuated values from 
+accelerometer at zero. In both cases, gyro stays horizontally stable. 
+</p>
 
 
 
 
-
+Compare your output to the pitch, roll, and yaw values from the accelerometer and the filtered response. Describe how they differ.
+Try adjusting the sampling frequency to see how it changes the accuracy of your estimated angles.
 
 
 
 
 <h2> Sample Data</h2>
-    <h2> Record a Stunt </h2>
-    <a href="https://youtu.be/iNH_kK5zv_E?si=h0ATEQUmRzyzoR_J" target="_blank">
-  Watch the video of RC car exploring its first steps as A RC CAR in Philips hallway</a>
-    <h2> Reference </h2>
+<p>To speed up the execution of the main loop, I removed all the delays and comment out
+  Serial.print in purpose of debugging. The sampling rate I got is 306.501 Hz. To talk about
+  loop rate V.S. data rate of IMU, I introduced two counts. Loop speed is way larger than 
+  IMU speed, 3*10^3 times larger. <br>
+  In terms of data storage, I think separate arrays would work the best as it is easy
+  to sparse. In terms of datatype, I would consider the one that can preserve the needed 
+  precision for data like angle, so I would use float instead of int to get more digits available.<br>
+  In terms of Artemis memory, I have 9 elements with each 100, four bytes per float element: 
+  in total it would be 3600. I can calcuate that I have space of 813680 bytes for storing 
+  bytes. Based on my IMU sampling rate, each element has 2.78 ms apart which leads to 62.8 s for time. 
+</p>
+<div class="code-block">
+  <div class="code-header">File: Output</div>
+  <pre><code>
+    Sketch uses 172960 bytes (17%) of program storage space. Maximum is 983040 bytes.
+    Global variables use 48936 bytes (12%) of dynamic memory, leaving 344280 bytes for local variables. Maximum is 393216 bytes.
+  </code></pre>
+</div>
+
+<h2> Record a Stunt </h2>
+<a href="https://youtu.be/iNH_kK5zv_E?si=h0ATEQUmRzyzoR_J" target="_blank">
+Watch the video of RC car exploring its first steps as A RC CAR in Philips hallway</a>
+<h2> Reference </h2>
 
 
 
