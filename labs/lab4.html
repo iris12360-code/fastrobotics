@@ -107,7 +107,7 @@ code {
 
             void setup() {
               Serial.begin(115200);
-              // Set as output (from Artemis, input to motor controller)
+              // Set as output 
               pinMode(MOTOR1_IN1, OUTPUT);
               pinMode(MOTOR1_IN2, OUTPUT);
               pinMode(MOTOR2_IN1, OUTPUT);
@@ -121,7 +121,7 @@ code {
               delay(3000);
 
               //stop
-              Serial.println("Stop!");
+              Serial.println("Stop");
               stop();
               delay(3000); 
             }
@@ -151,16 +151,16 @@ code {
         </p>
 
         <div class="code-block">
-          <div class="code-header">File: main.ino</div>
+          <div class="code-header">File: Lab 4.ino</div>
           <pre><code>
             void loop() {
               ....
-              // move backward for 5 seconds
+              // move backward 
               Serial.println("Move backward");
               backward(pwm_speed);
               delay(3000);
 
-              //stop for 5 second
+              //stop
               Serial.println("Stop!");
               stop();
               delay(3000); 
@@ -180,21 +180,25 @@ Watch the video of one side of wheels spinning supported by 850 mAh battery.</a>
         <a href="https://youtube.com/shorts/J5gwG5cArmQ?si=nmSLjRd1dgnnrSvR" target="_blank">
 Watch the video of both sides of wheels spinning supported by 850 mAh battery.</a>
 
+        <img src="../images/lab4/topview.jpg" alt="topview of setup of sensor on the car" width="350">
+        
 
-        <img src="../images/lab2/XXXX.jpg" alt="IMU connections" width="350">
-        <p>...</p>
+      <h2>Task 5 PWM Lower Limit </h2>
+        <p>When I set PWM speed to be 31 (30-35), the car staggered with minimum 
+          movement for moving forward. To achieve a on-axis turn, it requires 130-140 for PWM 
+        speed to overcome the friction on the ground. The lower limit really depends on 
+        ground texture, so there would be adjustment needed in the future when testing in different
+        environment. I also test the code to make a 90 degree turn with approximately 1 meter radius,
+        which requires a ratio of 2.5 (Motor 2 speed / Motor 1 speed).</p>
 
-      <h2>Task 5 Power Connection </h2>
-
-        <img src="../images/lab4/.jpg" alt="connection graph" width="550">
+      <h2>Task 6 Two-wheel Calibration </h2>
+              <img src="../images/lab4/.jpg" alt="connection graph" width="550">
         <div class="code-block">
           <div class="code-header">File: main.ino</div>
           <pre><code>...</code></pre>
         </div>
         <img src="../images/lab2/XXXX.jpg" alt="IMU connections" width="350">
         <p>...</p>
-
-      <h2>Task 1 Power Connection </h2>
       <h2>Task 1 Motor Calibration</h2>
       <h2>Task 1 Open Loop Control </h2>
       
