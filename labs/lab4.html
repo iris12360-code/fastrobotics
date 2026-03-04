@@ -161,7 +161,7 @@ code {
               delay(3000);
 
               //stop
-              Serial.println("Stop!");
+              Serial.println("Stop");
               stop();
               delay(3000); 
              }
@@ -182,7 +182,8 @@ Watch the video of both sides of wheels spinning supported by 850 mAh battery.</
 
         <img src="../images/lab4/topview.jpg" alt="topview of setup of sensor on the car" width="350">
         
-
+        <a href="https://youtube.com/shorts/J5gwG5cArmQ?si=nmSLjRd1dgnnrSvR" target="_blank">
+Watch the video of self-support car going backward and forward and ultimately stopping.</a>
       <h2>Task 5 PWM Lower Limit </h2>
         <p>When I set PWM speed to be 31 (30-35), the car staggered with minimum 
           movement for moving forward. To achieve a on-axis turn, it requires 130-140 for PWM 
@@ -192,29 +193,66 @@ Watch the video of both sides of wheels spinning supported by 850 mAh battery.</
         which requires a ratio of 2.5 (Motor 2 speed / Motor 1 speed).</p>
 
       <h2>Task 6 Two-wheel Calibration </h2>
-              <img src="../images/lab4/.jpg" alt="connection graph" width="550">
+        <a href="https://youtube.com/shorts/90x2jQvBgLM?si=JqJD2k3i6KuHl_MY" target="_blank">
+Watch the video of calibrating the car to run a straight line.</a>
+        <p> It takes many trials for calibration, as it is not simply a ratio problem.
+          Sometimes same ratio works for higher speed but fails for lower speed. The video 
+          demoed that car gets away from the line but then slightly gets back to the line which 
+          may result from an unstraight line typed on the ground. Besides, the noise from 
+          gear box also involved into the deviation. This experience also indicates the difficulties 
+          to control the car with open loop system. 
+        </p>
+      <h2>Task 7 Open Loop Control</h2>
         <div class="code-block">
-          <div class="code-header">File: main.ino</div>
-          <pre><code>...</code></pre>
+          <div class="code-header">File: Lab 4.ino</div>
+          <pre><code>
+            void loop() {
+              if (loop_count >= 1){
+                stop();
+                return;
+              }
+              Serial.println("Move forward");
+              forward(pwm_speed);
+              delay(500);
+
+              Serial.println("Stop");
+              stop();
+              delay(500); 
+
+              Serial.println("Make On-axis Turn");
+              turn(pwm_speed);
+              delay(1000);
+
+              Serial.println("Stop");
+              stop();
+              delay(700);
+
+              Serial.println("Move forward");
+              forward(pwm_speed);
+              delay(1000);
+
+              loop_count++;
+            }
+          </code></pre>
         </div>
-        <img src="../images/lab2/XXXX.jpg" alt="IMU connections" width="350">
-        <p>...</p>
-      <h2>Task 1 Motor Calibration</h2>
-      <h2>Task 1 Open Loop Control </h2>
-      
+          <a href="https://youtube.com/shorts/UanKE3WCX0k?si=K8KS7B-35aQCJ9ET" target="_blank">
+Watch the video of a cool U turn parking.</a>
+        <p>
+        Open loop control is hard to control the car as expected. I intended to do a U-turn run like 
+        racing car to have them going though those turns with big angles, in my case ideally 180 degrees. 
+        However, the video demonstrated that it had a hard time rerunning after two wheels spinning with different
+        direction in high speed. It requires higher power. 
+        </p>
 
 
+      <h2>Reference </h2>
+      <p>I received extensive help from Michelle Yang in terms of code for controlling car. <br>
+      I referred to Jeffery Cai and Aidan Derocher for pins for soldering, formatting, and 
+      comparing parameters (lower limits). <br>
+      I borrowed Apurva's car for tasks after task 6 as I burned one of my motor drivers at 12:38am
+      on the due day. 
 
-
-
-<img src="../images/lab4/connection_graph.jpg" alt="connection graph" width="550">
-<div class="code-block">
-  <div class="code-header">File: main.ino</div>
-  <pre><code>...</code></pre>
-</div>
-<img src="../images/lab2/XXXX.jpg" alt="IMU connections" width="350">
-<p>...</p>
-
+      </p>
   </div>   
 </body>
 </html>
