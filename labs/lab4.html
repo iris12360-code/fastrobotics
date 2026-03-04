@@ -100,8 +100,8 @@ code {
             #define MOTOR1_IN2 A15
 
             // Motor 2 pins
-            #define MOTOR2_IN1 A2
-            #define MOTOR2_IN2 A3
+            #define MOTOR2_IN1 A3
+            #define MOTOR2_IN2 A2
                     
             int pwm_speed = 80; // PWM speed
 
@@ -118,12 +118,12 @@ code {
               // move forward
               Serial.println("Move forward");
               forward(pwm_speed);
-              delay(5000);
+              delay(3000);
 
               //stop
               Serial.println("Stop!");
               stop();
-              delay(5000); 
+              delay(3000); 
             }
 
             // movement functions
@@ -149,11 +149,38 @@ code {
         <p>I commented out the code for the second motor to have wheels spinning on the table.
           I added the code below to enable the spinning in the other direction. 
         </p>
-        <img src="../images/lab4/.jpg" alt="connection graph" width="550">
+
         <div class="code-block">
           <div class="code-header">File: main.ino</div>
-          <pre><code>...</code></pre>
+          <pre><code>
+            void loop() {
+              ....
+              // move backward for 5 seconds
+              Serial.println("Move backward");
+              backward(pwm_speed);
+              delay(3000);
+
+              //stop for 5 second
+              Serial.println("Stop!");
+              stop();
+              delay(3000); 
+             }
+
+             void backward(int speed) {
+                analogWrite(MOTOR1_IN1, 0);
+                analogWrite(MOTOR1_IN2, speed);
+                analogWrite(MOTOR2_IN1, 0);
+                analogWrite(MOTOR2_IN2, speed);
+              }
+          </code></pre>
         </div>
+        
+        <a href="https://youtube.com/shorts/GqFAOcTcKrU?si=UYUbwq5IFTRguLNv" target="_blank">
+Watch the video of one side of wheels spinning supported by 850 mAh battery.</a>
+        <a href="https://youtube.com/shorts/J5gwG5cArmQ?si=nmSLjRd1dgnnrSvR" target="_blank">
+Watch the video of both sides of wheels spinning supported by 850 mAh battery.</a>
+
+
         <img src="../images/lab2/XXXX.jpg" alt="IMU connections" width="350">
         <p>...</p>
 
