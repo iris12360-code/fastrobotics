@@ -65,23 +65,104 @@ code {
 
       <h2>Pre Lab </h2>
       <p>
-        I am still learning C++ now, so for this lab I constructed a couple
-        helper functions to organize the code in a more structural way. I used two 
-       helper functions to record and send the data from TOF and adjust the car position
-       based on measurment using a proportional control. 
+        For this lab, we want to play with PID control, specifically position
+        control for this week. We want to implement PID control for a certain amount 
+        of time (in my case, 12 seconds). <br>
+        In terms of sending and receiving data, BLE is only used to trigger the starting 
+        and retrieve logged data. Code on python sends a start command <strong>START_P_RUN</strong>. 
+        Once the command is received, a boolean <strong> running </strong> is set to be true,
+        while timestamp at this point is set to be the starting time. Inside the loop, I have the 
+        TOF measurements conducted which gives input for porportional control and are collected 
+        into arrays. My instincts made it to have motors taking in speed within the same if statement. 
+        However, checking TOF data ready takes time which caused motor cannot adjust speed according
+        to distances quickly, so I placed helper function of motor taking action outside the if
+        data-ready range. </p>
+        <div class="code-block">
+          <div class="code-header">File: Lab 5.ino</div>
+          <pre><code>
+    void loop(void)
+    { ... 
+      if (running) {
+        if (distanceSensorA.checkForDataReady()) {
+          d_mm_A = distanceSensorA.getDistance();
+          fresh_TOF = millis();
+          distanceSensorA.clearInterrupt();
+          Compute_P(d_mm_A);
+          collect_TOF(d_mm_A);
+        }
+        else {
+          Compute_P(d_mm_A);
+        }
+      motor_action(Output);
+      ...}
+      }
+          </code></pre>
+        </div>
+        <p>Data including timestamp, distance, PWM speed are not sent until time hits the
+        boundary, which prevents a smaller loop frequency. After robot stops, arrays are sent 
+        by BLE. Similar to previous labs, each message of data is formatted into estring, which gets
+        parsed by notification handler and stored into separate lists in preparation for analysis and 
+        plotting. Here are my helper functions: Compute_P, motor_action, and collect_TOF.</p>
 
-      </p>
-      <img src="../images/lab4/connection_graph.jpg" alt="connection graph" width="550">
+        <div class="code-block">
+          <div class="code-header">File: Lab 5.ino</div>
+          <pre><code>
+      void Compute_P(double Input)
+      {
+      dis_error = Input - Setpoint; // calculate the distance from target postion
+      /*Compute PID Output*/
+      Output = kp * dis_error; // (+ ki * errSum + kd * dErr) P control only!
+      speed = constrain(abs((int)Output), 50, 255) ; // constrain speed with the running PWM range tested from lab 4
+      }
       
-      <h2>Task 1 Power Check </h2>
-        <p>To power the car properly and avoid burning the motor, the voltage range for motor driver is 2.7 to 10.8V. The battery I used is 3.7V, which 
-          is within the range. 
+      void motor_action(double dis_diff){
+        if (dis_diff > 10){ //leave a tolerence for TOF reading 
+          forward(speed);
+          //Serial.println("Too Far... I need to go closer!");  // Comment out print to react faster
+        }
+        else if (dis_diff < -10) {
+          backward(speed);
+          //Serial.println("Too close... I need to go farther!");
+        }
+        else {
+          stop();
+          //delay(1000);
+        } 
+      }
+
+      void collect_TOF(float d_mm_A){
+          if (log_index < LOG_SIZE) {
+            time_arr[log_index] = fresh_TOF - start_time;
+            dist_arr_A[log_index] = d_mm_A;
+            motor_arr[log_index] = speed; 
+            log_index ++;
+          }
+      }
+          </code></pre>
+        </div>       
+      <p>
+        I chose proportional control only because its quick response and ease for tuning. It only has
+        one variable --proportional gain -- to adjust. It is relatively easy to hand on compared with 
+        PI control or PID control. I do recognize that it has some cons, such as it can only approach 
+        to setpoints to infinity in infinity time (error never zero); high Kp made it really easier to 
+        omit the setpoint and crash to the wall. It is okay to use at this point since the system/question is not 
+        complicated. 
+      </p>
+
+      <h2>Task 1 Position Control </h2>
+        <p> The deadband of motor is at 35 for PWM speed from lab 5. I set the boundary to be within [50, 255]
+          to ensure the smooth running of thw car, which is also the range of my output after conversion. In 
+          consideration of a reasonable range of proportional control gain,
+          the input value can be depending on the maximum value of long-distance mode of 4,000 mm. The resulting 
+          range can be very big. Through testing, the range is approximately from 0.05 to 0.2. Gain larger than 0,2 easily 
+          got car crash to the obstable regardless of intervention from setpoint. <br>
         </p>
-  
+        <img src="../images/lab5/log_data.png" alt="data logged" width="550">
+          
       <h2>Task 2 PWM Signal Generation </h2>
         <p>
         </p>
-        <img src="../images/lab4/overview.jpg" alt="PWM verification" width="550">
+
         
         <div class="code-block">
           <div class="code-header">File: Lab 4.ino</div>
@@ -89,6 +170,19 @@ code {
 
           </code></pre>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <h2>Task 4 Wheel Test (Two Direction) </h2>
         <p>I commented out the code for the second motor to have wheels spinning on the table.
