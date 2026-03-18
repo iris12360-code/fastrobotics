@@ -180,88 +180,60 @@ code {
           direction. It would be faster or more efficient to activate the-other-direction run as a way to brake. A more clear way to 
           explain it is that you would tap on backward on remote control when you tried to do stunt on a forward-fast-running car.
         </p>
-      <h2>Task 2 Linear Ex </h2>
-        <p>
+      <h2>Task 2 Linear Extrapolation </h2>
+        <p> To fill in more data from linear extrapolation to estimate the location and take
+          action based on that, I updated the code with following changes. The performance showed
+          that car can actually stop without crashing to the wall with higher kp and bigger initial 
+          distance difference, and it spent less time adjusting near the setpoint/ target position. 
         </p>
 
         
         <div class="code-block">
           <div class="code-header">File: Lab 4.ino</div>
           <pre><code>
+      if (running) {
+        if (distanceSensorA.checkForDataReady()) {
+          last_tof = new_tof;
+          last_tof_time = new_tof_time;
+
+          new_tof = distanceSensorA.getDistance();
+          new_tof_time = millis();
+
+          d_mm_A = new_tof;
+          fresh_TOF = new_tof_time;
+          distanceSensorA.clearInterrupt();
+
+          if (new_tof_time > last_tof_time) {
+              tof_slope = (new_tof - last_tof) / (float)(new_tof_time - last_tof_time); // mm per ms
+          }
+          Compute_P(d_mm_A);
+          collect_TOF(d_mm_A);
+        }
+        else {
+          estimate_dis(d_mm_A);
+          Compute_P(est_d_mm_A);
+          collect_TOF(est_d_mm_A);
+        }
+      motor_action(Output);
+      ...}
+
+      void estimate_dis(double Input)
+      {
+      dis_error = Input - Setpoint;
+      unsigned long t_now = millis();
+      float dt = (float)new_tof_time - last_tof_time;
+      est_d_mm_A = new_tof + tof_slope * dt;
+      }
 
           </code></pre>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <h2>Task 4 Wheel Test (Two Direction) </h2>
-        <p>I commented out the code for the second motor to have wheels spinning on the table.
-          I added the code below to enable the spinning in the other direction. 
-        </p>
-
-        <div class="code-block">
-          <div class="code-header">File: Lab 4.ino</div>
-          <pre><code>
-            void loop() {
-
-              }
-          </code></pre>
-        </div>
-
-        <a href="https://youtube.com/shorts/GqFAOcTcKrU?si=UYUbwq5IFTRguLNv" target="_blank">
-Watch the video of one side of wheels spinning supported by 850 mAh battery.</a> <br>
-        <a href="https://youtube.com/shorts/J5gwG5cArmQ?si=nmSLjRd1dgnnrSvR" target="_blank">
-Watch the video of both sides of wheels spinning supported by 850 mAh battery.</a>
-
-        <img src="../images/lab4/topview.jpg" alt="topview of setup of sensor on the car" width="350">
-        
-        <a href="https://youtube.com/shorts/J5gwG5cArmQ?si=nmSLjRd1dgnnrSvR" target="_blank">
-Watch the video of self-support car going backward and forward and ultimately stopping.</a>
-      <h2>Task 5 PWM Lower Limit </h2>
-        <p>When I set PWM speed to be 31 (30-35), the car staggered with minimum 
-          movement for moving forward. To achieve a on-axis turn, it requires 130-140 for PWM 
-        speed to overcome the friction on the ground. The lower limit really depends on 
-        ground texture, so there would be adjustment needed in the future when testing in different
-        environment. I also test the code to make a 90 degree turn with approximately 1 meter radius,
-        which requires a ratio of 2.5 (Motor 2 speed / Motor 1 speed).</p>
-
-      <h2>Task 6 Two-wheel Calibration </h2>
-        <a href="https://youtube.com/shorts/90x2jQvBgLM?si=JqJD2k3i6KuHl_MY" target="_blank">
-Watch the video of calibrating the car to run a straight line.</a>
-        <p> It takes many trials for calibration, as it is not simply a ratio problem.
-          Sometimes same ratio works for higher speed but fails for lower speed. The video 
-          demoed that car gets away from the line but then slightly gets back to the line which 
-          may result from an unstraight line typed on the ground. Besides, the noise from 
-          gear box also involved into the deviation. This experience also indicates the difficulties 
-          to control the car with open loop system. 
-        </p>
-      <h2>Task 7 Open Loop Control</h2>
-        <div class="code-block">
-          <div class="code-header">File: Lab 4.ino</div>
-          <pre><code>
-
-          </code></pre>
-        </div>
-          <a href="https://youtube.com/shorts/UanKE3WCX0k?si=K8KS7B-35aQCJ9ET" target="_blank">
-Watch the video of a cool U turn parking.</a>
-        <p> 
-        </p>
-
+<a href="https://youtu.be/ufoQCj-4VVc?si=LSvNs4N5WdC_Se61" target="_blank">
+Watch the video of car performing position control with extrapolation with kp of 0.25.</a> <br>
 
       <h2>Reference </h2>
-      <p>
-
+      <p> Thanks to Michelle Yang, Jack Long for discussion about slow reaction/data logging rate.<br> 
+          I used chatGpt for clarifying questions, debugging such as finding missing parathesis, and brainstorming 
+          the structure to build pre-lab code. 
       </p>
   </div>   
 </body>
