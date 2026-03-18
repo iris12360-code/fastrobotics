@@ -158,8 +158,29 @@ code {
           got car crash to the obstable regardless of intervention from setpoint. <br>
         </p>
         <img src="../images/lab5/log_data.png" alt="data logged" width="550">
-          
-      <h2>Task 2 PWM Signal Generation </h2>
+        <p>There are certain periods in the time from measured displacement graph where car performed a linear speed. 
+          The maximum linear speed among them is 870.75 mm/s(511.25mm/s, 684.68mm/s, 870.75 mm/s), by using linear data and time stamp to calculate. 
+        </p>
+        <a href="https://youtube.com/shorts/2isuhuDwWFs?si=qd7O8ImGhzbPi_LF" target="_blank">
+        Watch the video of car performing position control on carpet floor with Kp of 0.15.</a> <br>
+        <a href="https://youtube.com/shorts/hlRv7Qy80nw?si=Nb_l7cVetnK3WAcS" target="_blank">
+        Watch the video of car performing position control on carpet floor with Kp of 0.2.</a> <br>
+        <a href="https://youtu.be/8raDewFOObc?si=a-cxfodsK9qixCrI" target="_blank">
+        Watch the video of car performing position control on lab table with Kp of 0.1.</a> <br>
+
+        <img src="../images/lab5/three_trial_data.png" alt="data logged" width="550">
+        <p>In terms of frequency, my TOF can collect 123 samples within 12 seconds consistently, so the 
+          frequency is approximately 10.25Hz. Compared with TOF, controller runs a higher frequency, which results
+          in cases that proportional control and motor action updates every loop run using newest
+          distance reading while TOF does not collect new reading. <br>
+
+          Something that I did not get a chance to implement here is to have a braking motion. Now my car speed is really
+          constrained in a range that car can run. It will only stop when times come to the end or it is right at the 
+          target position. Now the speed would like to bring car over the position and then it is activiated to run the opposite
+          direction. It would be faster or more efficient to activate the-other-direction run as a way to brake. A more clear way to 
+          explain it is that you would tap on backward on remote control when you tried to do stunt on a forward-fast-running car.
+        </p>
+      <h2>Task 2 Linear Ex </h2>
         <p>
         </p>
 
