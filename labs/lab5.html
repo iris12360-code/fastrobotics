@@ -157,7 +157,7 @@ code {
           range can be very big. Through testing, the range is approximately from 0.05 to 0.2. Gain larger than 0,2 easily 
           got car crash to the obstable regardless of intervention from setpoint. <br>
         </p>
-        <img src="../images/lab5/log_data.png" alt="data logged" width="550">
+        <img src="../images/lab5/log_data.png" alt="data logged" width="650">
         <p>There are certain periods in the time from measured displacement graph where car performed a linear speed. 
           The maximum linear speed among them is 870.75 mm/s(511.25mm/s, 684.68mm/s, 870.75 mm/s), by using linear data and time stamp to calculate. 
         </p>
@@ -168,7 +168,7 @@ code {
         <a href="https://youtu.be/8raDewFOObc?si=a-cxfodsK9qixCrI" target="_blank">
         Watch the video of car performing position control on lab table with Kp of 0.1.</a> <br>
 
-        <img src="../images/lab5/three_trial_data.png" alt="data logged" width="550">
+        <img src="../images/lab5/three_trial_data.png" alt="data logged" width="650">
         <p>In terms of frequency, my TOF can collect 123 samples within 12 seconds consistently, so the 
           frequency is approximately 10.25Hz. Compared with TOF, controller runs a higher frequency, which results
           in cases that proportional control and motor action updates every loop run using newest
@@ -185,15 +185,16 @@ code {
           action based on that, I updated the code with following changes. The performance showed
           that car can actually stop without crashing to the wall with higher kp and bigger initial 
           distance difference, and it spent less time adjusting near the setpoint/ target position. 
+          Besides, it achieved to collect far more data samples than before (1,000 > 123). 
         </p>
 
         
         <div class="code-block">
-          <div class="code-header">File: Lab 4.ino</div>
+          <div class="code-header">File: Lab 5.ino</div>
           <pre><code>
       if (running) {
         if (distanceSensorA.checkForDataReady()) {
-          last_tof = new_tof;
+          last_tof = new_tof;   //mark the collected data as OLD
           last_tof_time = new_tof_time;
 
           new_tof = distanceSensorA.getDistance();
@@ -219,7 +220,6 @@ code {
 
       void estimate_dis(double Input)
       {
-      dis_error = Input - Setpoint;
       unsigned long t_now = millis();
       float dt = (float)new_tof_time - last_tof_time;
       est_d_mm_A = new_tof + tof_slope * dt;
@@ -227,11 +227,12 @@ code {
 
           </code></pre>
         </div>
+        <img src="../images/lab5/extra_graph.png" alt="data logged for extrapolation" width="650">
 <a href="https://youtu.be/ufoQCj-4VVc?si=LSvNs4N5WdC_Se61" target="_blank">
 Watch the video of car performing position control with extrapolation with kp of 0.25.</a> <br>
 
       <h2>Reference </h2>
-      <p> Thanks to Michelle Yang, Jack Long for discussion about slow reaction/data logging rate.<br> 
+      <p> Thanks to Michelle Yang, Jack Long and Zoey Zhou for discussion about slow reaction/data logging rate.<br> 
           I used chatGpt for clarifying questions, debugging such as finding missing parathesis, and brainstorming 
           the structure to build pre-lab code. 
       </p>
