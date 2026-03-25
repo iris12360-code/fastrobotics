@@ -125,13 +125,19 @@ code {
           <a href="https://youtube.com/shorts/0mC6_ppZ780?si=5aOZ2PD0cDBjbClf" target="_blank">
         Watch the video of car successfully reacting to external interference with little overshoot.</a> <br>
         
-        <p>The graph here showed some success and some limitation so far. Controller responds to error quickly 
+        <p>With gain of Kp = 0.8 and Kd = 0.2, the graph here showed some success and some limitation so far. Controller responds to error quickly 
           without much stucking. D term caused damping opposing P term and car is returning towards the target
           repeatedly. However, it showed sometimes speed striked with two boundaries. TA proposed the concern about 
           high lower bounary while it is actually the deadband tested from lab 4 with second-time confirmation.
           There remains some unsmooth lines at the top of D terms, which requires strong low-pass filtering.  
         </p>
 
+        <p>Other problem in tuning:<br></p>
+        <img src="../images/lab6/stop_fail.png" alt="extra zeros in arrays" width="750">
+        <p>2) There are extra zeros sent after time hits my boundary time_max. To remove those. I added flag 
+          into the if statement for time check so that no more invalid data logged. 
+        </p>
+        <img src="../images/lab6/flag_check.png" alt="flag stopping data logging" width="750">
         <h2>Part 2 Range/Sampling Discussion </h2>
 
           <p>In terms of gyro limitation, I found that gyroscope has sensitivity levels +/-250,
