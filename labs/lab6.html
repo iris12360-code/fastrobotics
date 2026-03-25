@@ -69,7 +69,10 @@ code {
         we basically want to achieve that car can return to its original orientation to remain stationary
         while its orientation is interrupted by external force.  <br>
         
-
+        <p>I almost had a nightmare dealing with drift of data when handling IMU in lab 2, so I chose to 
+          use DMP this lab to minimize the yaw drift. Thanks to Stephan's DMP orientation, I set up DMP 
+          into my code well. 
+        </p>
         <p>To receive valid data from DMP, I included a boolean <strong>yaw_updated</strong> to have
         the check for availability for Quat6 data as an initization condition to start the loop. </p>
         <div class="code-block">
@@ -90,20 +93,32 @@ code {
         </div>
 
 
-
-        <p> During the testing process, there are cases that car performed unsmoothly where friction 
-          really affects the rotation motion. Therefore, I set the speed within a range confirmed from 
-          Lab 4 where minimum speed is PWM 130.  </p>
-        <img src="../images/lab6/constrain_speed.png" alt="speed constrained" width="650">
-      
-
+        <h2>Part 1 PID discussion </h2>
 
         <p> When I was debugging my P-control, it happened that my car kept overshooting. To overcome
           overshoot, I added derivative control. Derivative control can provide a large opposing
           force when it is close to the setpoint. I set the boolean <strong>first_run</strong> and 
-          introduced low-pass filter to eliminate the speed components which is sharp, unsmooth. 
+          introduced low-pass filter to eliminate the speed components which is sharp, unsmooth. One 
+          Particular thing to note in the following code: I integrated the min_speed in the Output which
+          enables controller to have the control authority even in the range (0-130 PWM) where car cannot
+          rotate which is good for derivative control as the original data without derivative control would 
+          be linear across larger range (0-220 instead 130-220). 
           </p>
-          <img src="../images/lab6/D_addition.png" alt="smaller ODR rate" width="650">
+          <img src="../images/lab6/D_addition.png" alt="smaller ODR rate" width="750">
+          <p>In terms of gyro limitation, I found that gyroscope has sensitivity levels +/-250,
+            +/-500, +/-1000, and +/-2000 degrees per second from spec sheet, which coresponds to different values assigned to 
+            the gyro bit. Based on our experience with PWM speed, it is not likely that car can achieve the maximum
+            speed (2000 degrees per second), so it is sufficient for our application. In my case, since I know
+             I am gonna use DMP, it is auto-set by code below. 
+          </p>
+          <img src="../images/lab6/auto_set.png" alt="gyro sensitivity" width="750">
+
+
+
+
+
+          <img src="../images/lab6/PID_final.png" alt="Angle and Speed Graphs" width="750">
+
           New problem comes up: my car basically ignored the original position when shifting back and 
           started tornado-rotation mode. Thanks to TA's help, I found out that my angle difference stay
            zero for longer time than it actually happened.  </p>
@@ -111,7 +126,8 @@ code {
         Watch the video of car keeping missing the original postion and starting tornado performance.</a> <br>
         <p>This resulted from that ODR speed is very fast, which resulted in a small <strong>dt</strong> value,
         which amplified the error and resulted larger D term. In this case, controller reacts to noise instead
-      of real motion. Therefore I changed the divider which gave me a ODR rate of 27.5 Hz. </p>
+      of real motion. Therefore I changed the divider which gave me a ODR rate of 27.5 Hz. This also ensures reading
+      data fast enough to keep up and avid chip crashing. </p>
       <img src="../images/lab6/slow_ODR.png" alt="smaller ODR rate" width="650">
         <p>Also in this process, TA reminded me that I should be able to provide gain from Python 
           which is more efficient in tuning in the future. I also noticed that my every run takes a couple steps
@@ -123,7 +139,7 @@ code {
 
 
         <div class="code-block">
-          <div class="code-header">File: Lab 6.ino</div>
+          <div class="code-header">File: Loop.ino</div>
           <pre><code>
           if (cmd_type == START_P_RUN) {
             myICM.resetFIFO();
@@ -139,10 +155,7 @@ code {
           </code></pre>
         </div>   
         
-
-
-
-      <h2>Part 1 PID discussion </h2>
+      
 
         <img src="../images/lab6/poor_P_graph.png" alt="data logged" width="650">
         <p></p>
