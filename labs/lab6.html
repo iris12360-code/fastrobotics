@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MAE 4190 – Lab 6</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.6em; margin-top: 40px; }
+    h3 { font-size: 1.3em; margin-top: 20px; }
+    p  { line-height: 1.6; }
+
+    img {
+      display: block;
+      margin: 20px auto;
+      max-width: 100%;
+    }
+
+    .code-block {
+  margin: 30px 0;
+}
+
+.code-header {
+  background-color: #eaeaea;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  font-family: monospace;
+  border-radius: 6px 6px 0 0;
+}
+
+.code-header span {
+  font-weight: bold;
+}
+
+.code-block pre {
+  margin: 0;
+  background-color: #f5f5f5;
+  padding: 16px;
+  overflow-x: auto;
+  border-radius: 0 0 6px 6px;
+}
+
+code {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.95em;
+}
+
+  </style>
+</head>
+
+<body>
+    <div class="content">
+
+    <h1>Lab 6：Orientation Control</h1>
+
+      <h2>Pre Lab </h2>
+      <p>
+        For this lab, we want to use IMU to implement orientation control. Based on the demo video,
+        we basically want to achieve that car can return to its original orientation to remain stationary
+        while its orientation is interrupted by external force.  <br>
+        
+
+        <p>To receive valid data from DMP, I included a boolean <strong>yaw_updated</strong> to have
+        the check for availability for Quat6 data as an initization condition to start the loop. </p>
+        <div class="code-block">
+          <div class="code-header">File: Loop.ino</div>
+          <pre><code>
+          if ((data.header & DMP_header_bitmap_Quat6) > 0) {
+              ...
+              yaw_updated = true;
+              ...
+          }
+          if (flag_pid && yaw_updated) {
+            fresh_IMU = micros();
+            orientation_control(); // Angle Difference Collection & PID calculation 
+            collect_angles(); // Add values from each loop into arrays 
+            motor_action(angle_error); // Motor Action corresponds to sign of Angle Differences
+          }
+          </code></pre>
+        </div>
+
+
+
+        <p> During the testing process, there are cases that car performed unsmoothly where friction 
+          really affects the rotation motion. Therefore, I set the speed within a range confirmed from 
+          Lab 4 where minimum speed is PWM 130.  </p>
+        <img src="../images/lab5/constrain_speed.png" alt="speed constrained" width="650">
+      
+
+
+        <p> When I was debugging my P-control, it happened that my car basically ignored the original 
+          position when shifting back and started tornado-rotation mode. Thanks to TA's help, I found 
+        out that my angle difference stay zero for longer time than it actually happened.  </p>
+        <a href="https://youtube.com/shorts/y1ZHqDAJbxo?si=J6sRNa1ZSW6Tb1Hd" target="_blank">
+        Watch the video of car keeping missing the original postion and starting tornado performance.</a> <br>
+        
+        <p>Also in this process, TA reminded me that I should be able to provide gain from Python 
+          which is more efficient in tuning in the future. 
+        </p>
+
+
+
+
+
+
+
+
+
+        <div class="code-block">
+          <div class="code-header">File: Loop.ino</div>
+          <pre><code>
+
+          </code></pre>
+        </div>   
+        
+
+
+
+      <h2>Part 1 PID discussion </h2>
+
+        <img src="../images/lab6/poor_P_graph.png" alt="data logged" width="650">
+        <p></p>
+        <a href="https://youtube.com/shorts/2isuhuDwWFs?si=qd7O8ImGhzbPi_LF" target="_blank">
+        Watch the video of car performing position control on carpet floor with Kp of 0.15.</a> <br>
+
+
+      <h2>Part 2 Range/Sampling Discussion </h2>
+
+
+        <p> </p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <h2>Reference </h2>
+      <p> Thanks to Michelle Yang, Jack Long and Zoey Zhou for discussion about slow reaction/data logging rate.<br> 
+          I used chatGpt for clarifying questions, debugging such as finding missing parathesis, and brainstorming 
+          the structure to build pre-lab code. 
+      </p>
+  </div>   
+</body>
+</html>
