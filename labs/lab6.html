@@ -105,6 +105,35 @@ code {
           be linear across larger range (0-220 instead 130-220). 
           </p>
           <img src="../images/lab6/D_addition.png" alt="smaller ODR rate" width="750">
+
+          <p>In terms of derivative terms, I think taking derivative of a signal that is the integral of another signal
+            would amplify noise in the integral. Because yaw angle is derived from integrated measurements, noises present would 
+            be magnified in the computation of derivative, which is not really helpful here.  Changes in setpoints would cause the error 
+          to change drastically where derivative term increases. Car may react with spinning more aggressively with high overshoot, which is
+          seen as derivative kick, with controller producing large control signal pushing it far from equilibrium. Derivative
+           kicks would become a problem, except low-pass filter helps to smooth the spike. 
+      Low-pass filter can filter out high-frequency changes over time which reduces errors accordingly.
+       With LPF(low pass filter,) Car performs with less jerk and less overshoot. Derivative kicks get smaller.   </p>
+
+
+          <p>In the tuning process, kp was adjusted to be larger and larger until speed is actively in 
+            the range of lower and upper boundary set by my constrain where control is responsive and system behaves predictible, 
+            easier for tuning process. In other words, this PID ensures that linear control remains effective. 
+          </p>
+          
+          <img src="../images/lab6/PID_final.png" alt="Angle and Speed Graphs" width="750">
+          <a href="https://youtube.com/shorts/0mC6_ppZ780?si=5aOZ2PD0cDBjbClf" target="_blank">
+        Watch the video of car successfully reacting to external interference with little overshoot.</a> <br>
+        
+        <p>The graph here showed some success and some limitation so far. Controller responds to error quickly 
+          without much stucking. D term caused damping opposing P term and car is returning towards the target
+          repeatedly. However, it showed sometimes speed striked with two boundaries. TA proposed the concern about 
+          high lower bounary while it is actually the deadband tested from lab 4 with second-time confirmation.
+          There remains some unsmooth lines at the top of D terms, which requires strong low-pass filtering.  
+        </p>
+
+        <h2>Part 2 Range/Sampling Discussion </h2>
+
           <p>In terms of gyro limitation, I found that gyroscope has sensitivity levels +/-250,
             +/-500, +/-1000, and +/-2000 degrees per second from spec sheet, which coresponds to different values assigned to 
             the gyro bit. Based on our experience with PWM speed, it is not likely that car can achieve the maximum
@@ -112,12 +141,6 @@ code {
              I am gonna use DMP, it is auto-set by code below. 
           </p>
           <img src="../images/lab6/auto_set.png" alt="gyro sensitivity" width="750">
-
-
-
-
-
-          <img src="../images/lab6/PID_final.png" alt="Angle and Speed Graphs" width="750">
 
           New problem comes up: my car basically ignored the original position when shifting back and 
           started tornado-rotation mode. Thanks to TA's help, I found out that my angle difference stay
@@ -135,11 +158,10 @@ code {
           on the python side and read from arduino with help of Chatgpt. The code below split the string into 2 numbers and assign them to 
           Kp and Kd. 
         </p>
+    
         <img src="../images/lab6/python_gain_update.png" alt="update gains" width="650">
-
-
         <div class="code-block">
-          <div class="code-header">File: Loop.ino</div>
+          <div class="code-header">File: Lab 6.ino</div>
           <pre><code>
           if (cmd_type == START_P_RUN) {
             myICM.resetFIFO();
@@ -153,39 +175,37 @@ code {
             ...
             }
           </code></pre>
-        </div>   
-        
+        </div>  
+
+        <p>In order to continue sending processing commands, I have code pulling BLE all the time shown below with loop
+          checking command every time. I removed delays and while loops to prevent execution freezing.
+            </p> 
+        <div class="code-block">
+          <div class="code-header">File: Loop.ino</div>
+          <pre><code>
+    while (central.connected()) {
+      BLE.poll();
+     ...
+      if (rx_characteristic_string.written()) {
+        //Serial.println("RX written -> handle_command()");
+        handle_command();
+      }}
+          </code></pre>
+        </div> 
+
+        <p>For future self navigation, it will require car to change the orientation when TOF read specific values. Therefore,
+          it requires car to update the setpoint in the real time and ideally PID control can handle the resulting spikes. 
+          To control the orientation while going forward, it sounds like a combination of linear motion and rotational motion. 
+          By intuition, it sounds like to add two motions, specifically speeds in two different cases together. Left and right wheels
+          will differentiate by a rotational speed in terms of signs and required ratio for calibration. 
+        </p>
       
-
-        <img src="../images/lab6/poor_P_graph.png" alt="data logged" width="650">
-        <p></p>
-        <a href="https://youtube.com/shorts/2isuhuDwWFs?si=qd7O8ImGhzbPi_LF" target="_blank">
-        Watch the video of car performing position control on carpet floor with Kp of 0.15.</a> <br>
-
-
-      <h2>Part 2 Range/Sampling Discussion </h2>
-
-
-        <p> </p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
+        
+        
       <h2>Reference </h2>
-      <p> Thanks to Michelle Yang, Jack Long and Zoey Zhou for discussion about slow reaction/data logging rate.<br> 
-          I used chatGpt for clarifying questions, debugging such as finding missing parathesis, and brainstorming 
-          the structure to build pre-lab code. 
+      <p> Thanks to TA Jack Long and Trevor Dales for discussion about PID tuning, ODR rate adjustment, and  gain providing.<br> 
+          I used chatGpt for clarifying questions, debugging such as code for eliminating hard-code gain in arduino. 
       </p>
   </div>   
 </body>
