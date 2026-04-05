@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MAE 4190 – Lab 6</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.6em; margin-top: 40px; }
+    h3 { font-size: 1.3em; margin-top: 20px; }
+    p  { line-height: 1.6; }
+
+    img {
+      display: block;
+      margin: 20px auto;
+      max-width: 100%;
+    }
+
+    .code-block {
+  margin: 30px 0;
+}
+
+.code-header {
+  background-color: #eaeaea;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  font-family: monospace;
+  border-radius: 6px 6px 0 0;
+}
+
+.code-header span {
+  font-weight: bold;
+}
+
+.code-block pre {
+  margin: 0;
+  background-color: #f5f5f5;
+  padding: 16px;
+  overflow-x: auto;
+  border-radius: 0 0 6px 6px;
+}
+
+code {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.95em;
+}
+
+  </style>
+</head>
+
+<body>
+    <div class="content">
+
+    <h1>Lab 7：Kalman Filter</h1>
+
+
+
+        <h2>Part 1 Estimate Drag and Momentum </h2>
+
+        <p> 
+        To build the state space model for the car, I need to estimate the drag and momentum terms in my matrices.
+       </p>
+          <img src="../images/lab7/eqn_7.png" alt="smaller ODR rate" width="350">
+        <p>Replacing F by Newton's second law of motion, I got two states for this model:</p>
+          <img src="../images/lab7/two_state.png" alt="smaller ODR rate" width="350">
+        <p>Using two states, I can estimate drag <strong> d </strong> and mass <strong> m </strong> from measuremnt
+          of steady input. The following is to solve this state space model. </p>
+          <img src="../images/lab7/solve_statespace.jpg" alt="smaller ODR rate" width="350">
+        <p>When calculating the speed using the position differences within small <strong>dt </strong>
+        , it occured that list of calculated speed stayed zero. To debug, I added <strong>Serial Print </strong>
+      .</p>
+      <img src="../images/lab7/Serial_print.jpg" alt="Serial Print Code" width="550">
+      <p>It turned out that I got NaN for the initial data value as dt is zero. Invalid data may collapse 
+        the appending process. Therefore, I editted my code inside estimate_dis to ensure a zero input for
+        the first calculated speed value. 
+      </p>
+      <img src="../images/lab7/zero_value.png" alt="Serial Print Code" width="550">
+      <p>To avoid car crashing to the wall, I set the <strong>Setpoint</strong> to be at 400mm from the wall,
+      and command robot to go to the opposite direction when it approaches to 250mm from set point, creating buffer
+    to decrease speed in time before crashing to the wall. </p>
+
+        <div class="code-block">
+          <div class="code-header">File: Loop.ino</div>
+          <pre><code>
+          if ((data.header & DMP_header_bitmap_Quat6) > 0) {
+              ...
+              yaw_updated = true;
+              ...
+          }
+          if (flag_pid && yaw_updated) {
+            fresh_IMU = micros();
+            orientation_control(); // Angle Difference Collection & PID calculation 
+            collect_angles(); // Add values from each loop into arrays 
+            motor_action(angle_error); // Motor Action corresponds to sign of Angle Differences
+          }
+          </code></pre>
+        </div>
+
+        <h2>Part 2 Initialize KF </h2>
+        <h2>Part 3 Implement and test your Kalman Filter in Jupyter</h2>
+        <h2>Part 4 Implement the Kalman Filter on the Robot</h2>
+        
+        
+      <h2>Reference </h2>
+      <p> Thanks to TA Jack Long and Trevor Dales for discussion about PID tuning, ODR rate adjustment, and  gain providing.<br> 
+          Thanks to Stephan's detailed orientation for DMP. <br>
+        I used chatGpt for clarifying questions, debugging such as code for eliminating hard-code gain in arduino. 
+      </p>
+  </div>   
+</body>
+</html>
