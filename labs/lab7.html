@@ -94,8 +94,32 @@ code {
         <img src="../images/lab7/motor_input.png" alt="Serial Print Code" width="550">
         <img src="../images/lab7/cal_speed.png" alt="Serial Print Code" width="550">
 
-        <p>To </p>
-        <div class="code-block">
+        <p>To get the steady state speed, I took data points from scatter version of plot. By intuition, I 
+          would get the linear segment of data right before the change of car direction due to avoid-crashing 
+          system. However, the speed after car started reacting to measured distance would not be steady state 
+          anymore. Therefore, I took data points before 650 mm (Setpoint 400mm + Interference Distance 250mm)
+          and get a steady state speed of <strong> 2425.6 mm/s</strong>. The 90% rise time is roughly
+        1.335s and the speed at that time is 2182.5 mm/s. Therefore, the drag is 0.412 kg/s, and the mass
+       of car system is 0.239 kg. </p> 
+       <img src="../images/lab7/cal_system.jpg" alt="Serial Print Code" width="550">
+
+
+
+        <h2>Part 2 Initialize KF </h2>
+
+        <p>From lecture 14, I wrote A, B, C matrices using dynamic parameters as shown below.
+          Because the measurement is distance in positive values, so position should be positive (1)
+        instead of negative (-1) in the matrice.  </p>
+        <img src="../images/lab7/matrice.png" alt="Serial Print Code" width="550">
+        <p> For the sampling time, I used 0.1 s as this is very consistent from my measuring speed. 
+
+
+        </p>
+        <img src="../images/lab7/delta_t.png" alt="Serial Print Code" width="550">
+        <h2>Part 3 Implement and test your Kalman Filter in Jupyter</h2>
+        <h2>Part 4 Implement the Kalman Filter on the Robot</h2>
+        
+            <div class="code-block">
           <div class="code-header">File: Loop.ino</div>
           <pre><code>
           if ((data.header & DMP_header_bitmap_Quat6) > 0) {
@@ -112,11 +136,6 @@ code {
           </code></pre>
         </div>
 
-        <h2>Part 2 Initialize KF </h2>
-        <h2>Part 3 Implement and test your Kalman Filter in Jupyter</h2>
-        <h2>Part 4 Implement the Kalman Filter on the Robot</h2>
-        
-        
       <h2>Reference </h2>
       <p> Thanks to TA Jack Long and Trevor Dales for discussion about PID tuning, ODR rate adjustment, and  gain providing.<br> 
           Thanks to Stephan's detailed orientation for DMP. <br>
