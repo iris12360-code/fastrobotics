@@ -70,12 +70,12 @@ code {
         <p> 
         To build the state space model for the car, I need to estimate the drag and momentum terms in my matrices.
        </p>
-          <img src="../images/lab7/eqn_7.png" alt="smaller ODR rate" width="350">
+          <img src="../images/lab7/eqn_7.png" alt="smaller ODR rate" width="150">
         <p>Replacing F by Newton's second law of motion, I got two states for this model:</p>
-          <img src="../images/lab7/two_state.png" alt="smaller ODR rate" width="350">
+          <img src="../images/lab7/two_state.png" alt="smaller ODR rate" width="550">
         <p>Using two states, I can estimate drag <strong> d </strong> and mass <strong> m </strong> from measuremnt
           of steady input. The following is to solve this state space model. </p>
-          <img src="../images/lab7/solve_statespace.jpg" alt="smaller ODR rate" width="350">
+          <img src="../images/lab7/solve_statespace.jpg" alt="smaller ODR rate" width="550">
         <p>When calculating the speed using the position differences within small <strong>dt </strong>
         , it occured that list of calculated speed stayed zero. To debug, I added <strong>Serial Print </strong>
       .</p>
@@ -87,8 +87,14 @@ code {
       <img src="../images/lab7/zero_value.png" alt="Serial Print Code" width="550">
       <p>To avoid car crashing to the wall, I set the <strong>Setpoint</strong> to be at 400mm from the wall,
       and command robot to go to the opposite direction when it approaches to 250mm from set point, creating buffer
-    to decrease speed in time before crashing to the wall. </p>
+    to decrease speed in time before crashing to the wall. The following graphs showed TOF measured distance (mm),
+  motor input PWM speed, and calculated speed VS time (s) in the order. </p>
 
+        <img src="../images/lab7/tof_distance.png" alt="Serial Print Code" width="550">
+        <img src="../images/lab7/motor_input.png" alt="Serial Print Code" width="550">
+        <img src="../images/lab7/cal_speed.png" alt="Serial Print Code" width="550">
+
+        <p>To </p>
         <div class="code-block">
           <div class="code-header">File: Loop.ino</div>
           <pre><code>
