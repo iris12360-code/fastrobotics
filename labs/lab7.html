@@ -101,7 +101,7 @@ code {
           and get a steady state speed of <strong> 2425.6 mm/s</strong>. The 90% rise time is roughly
         1.335s and the speed at that time is 2182.5 mm/s. Therefore, the drag is 0.412 kg/s, and the mass
        of car system is 0.239 kg. </p> 
-       <img src="../images/lab7/cal_system.jpg" alt="Serial Print Code" width="550">
+       <img src="../images/lab7/cal_system.jpg" alt="Serial Print Code" width="650">
 
 
 
@@ -110,13 +110,19 @@ code {
         <p>From lecture 14, I wrote A, B, C matrices using dynamic parameters as shown below.
           Because the measurement is distance in positive values, so position should be positive (1)
         instead of negative (-1) in the matrice.  </p>
-        <img src="../images/lab7/matrice.png" alt="Serial Print Code" width="550">
-        <p> For the sampling time, I used 0.1 s as this is very consistent from my measuring speed. 
+        <img src="../images/lab7/matrice.png" alt="Serial Print Code" width="650">
+        <p> For the sampling time, I used 0.1 s as this is very consistent from my measuring speed.
+          In the process of quantifying uncertainity, I can use Kalman filter to balance the trust between 
+          model and sensor. For process noise (sigma_u) and measurement noise (sigma_z), I have model errors 
+          in position updates and velocity updates as well as distance measurement noises.   
+       </p>
+        <img src="../images/lab7/delta_t.png" alt="Serial Print Code" width="650">
+        //////////////////////////////sigma 未上
 
-
-        </p>
-        <img src="../images/lab7/delta_t.png" alt="Serial Print Code" width="550">
         <h2>Part 3 Implement and test your Kalman Filter in Jupyter</h2>
+        <img src="../images/lab7/km_code.png" alt="Kalman Filter Match" width="650">
+        
+        <img src="../images/lab7/km_match.png" alt="Kalman Filter Match" width="650">
         <h2>Part 4 Implement the Kalman Filter on the Robot</h2>
         
             <div class="code-block">
