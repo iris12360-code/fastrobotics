@@ -124,14 +124,16 @@ code {
           slides. The shown code snippet combines measurement updates with model.  </p>
         <img src="../images/lab7/km_code.png" alt="Kalman Filter Match" width="650">
         <p>The result of Kalman filter is shown below in the plot. Model fits pretty good with 
-          measurement results. However, trusting filter more will lead to big deviation from data.
+          measurement results.</p> 
+          <img src="../images/lab7/km_match.png" alt="Kalman Filter Match" width="550">
+          <p>However, trusting filter more will lead to big deviation from data.
          In terms of parameters, smaller sigma 1 & 2 and larger sigma 3 would be more trust of model
         <strong>Specifically, process noise (sigma 1 & 2) controls trust in the model with its larger value
         leaning to trust measurement more. Meausrement noise (sigma 3) with larger value makes data trend 
         smoother but not responsive to changes in measurement. Model parameter d and m need to match
         with the system or the model will show biased prediction.</strong>  </p>
        
-        <img src="../images/lab7/km_match.png" alt="Kalman Filter Match" width="550">
+        
         <img src="../images/lab7/km_off.png" alt="Kalman Filter off" width="550">
 
         <h2>Part 4 Implement the Kalman Filter on the Robot</h2>
