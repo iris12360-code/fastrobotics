@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MAE 4190 – Lab 7</title>
+  <title>MAE 4190 – Lab 6</title>
 
   <style>
     body {
@@ -125,41 +125,17 @@ code {
         <img src="../images/lab7/km_code.png" alt="Kalman Filter Match" width="650">
         <p>The result of Kalman filter is shown below in the plot. Model fits pretty good with 
           measurement results. However, trusting filter more will lead to big deviation from data.
-         In terms of parameters, smaller sigma 1 & 2 and larger sigma 3 would be more trust of model
-        <strong>Specifically, process noise (sigma 1 & 2) controls trust in the model with its larger value
-        leaning to trust measurement more. Meausrement noise (sigma 3) with larger value makes data trend 
-        smoother but not responsive to changes in measurement. Model parameter d and m need to match
-        with the system or the model will show biased prediction.</strong>  </p>
-       
+        </p>
         <img src="../images/lab7/km_match.png" alt="Kalman Filter Match" width="650">
-        <img src="../images/lab7/km_off.png" alt="Kalman Filter off" width="550">
-
+        <img src="../images/lab7/km_off.png" alt="Kalman Filter off" width="650">
         <h2>Part 4 Implement the Kalman Filter on the Robot</h2>
-        <p>I translated Kalman Filter code from python to C++ for arduino and remove code
-          snippet for interpolation. Here are functions specifically for Kalman filter.
-        </p>
-        <img src="../images/lab7/km_screenshot_1.png" alt="Kalman Filter Implementation" width="750">
-        <img src="../images/lab7/km_screenshot_2.png" alt="Kalman Filter Implementation" width="750">
-        <p>My observation for Kalman filter prediction: Distance got from Kalman filter is matching 
-          with actual measurement pretty well with small overshoot. Because I am only using a P control,
-          it is reasonable that i cannot full remove overshot like a PD control.Compared with large spike
-          in raw data, Klaman filter produces did work 
-          to smooth the distance slightly, which can be improved by <strong>an increased sigma_3</strong>.
-          Near steady state, Klaman filter converges to a stable value with little fluctuation, which showed 
-          good control stability. 
-        </p>
-        <img src="../images/lab7/km_imple.png" alt="Kalman Filter Implementation" width="550">
-        <a href="https://youtube.com/shorts/ZzbIwmk9TXA?si=saaI4yX7L87WiISa" target="_blank">
-        Watch the video of car with Kalman Filter predicting based on real-time TOF measurement.</a> <br>
         
 
 
-
-
       <h2>Reference </h2>
-      <p> I referred to Trevor Dales and Jeffery Cai lab report for checking the Kalman Filter performance.<br> 
-          I referred to Lecture 13 - Observability and Kalman Filters for related equations and codes. <br>
-        I used chatGpt for clarifying questions, debugging for python-C++ conversion. 
+      <p> Thanks to TA Jack Long and Trevor Dales for discussion about PID tuning, ODR rate adjustment, and  gain providing.<br> 
+          Thanks to Stephan's detailed orientation for DMP. <br>
+        I used chatGpt for clarifying questions, debugging such as code for eliminating hard-code gain in arduino. 
       </p>
   </div>   
 </body>
