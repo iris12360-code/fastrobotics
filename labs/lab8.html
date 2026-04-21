@@ -76,58 +76,48 @@ code {
         <img src="../images/lab8/switch_1.png" alt="switch mode" width="550">
         <img src="../images/lab8/switch_2.png" alt="switch mode" width="550">
         <p>To enable robot to do a series of things step by step, I incorporated a switch-mode 
-         to have it do each thing step by step: <strong>APPROACH</strong> enables robot to approach the wall
+         to have it do each thing step by step: 
+         <strong>APPROACH</strong> enables robot to approach the wall
          to distance as close as 1 ft which is similiar to lab 5 and sets the goal of final orientation 
          as 180 degrees from the initial orientation. To ensure that the switching happens only 
          the robot at the appropriate position, switching of modes is inside the if statement for 
-         position check. <strong>TURN ALIGH</strong> was evolved from a function of make a turn and a function
+         position check.<br>
+        <strong>TURN ALIGH</strong> was evolved from a function of make a turn and a function
          of orientation alignment like lab 6. I was experimenting with two modes doing these functions
          following each other. However, the control of turning 180 degrees uses the orientation adjustment 
          code snippet inevitably which is a bit redunant to the second function. Therefore, one mode should be 
-         able to achieve the goal successfully. <strong>EXIT STRAIGHT</strong> only do the time check that 
+         able to achieve the goal successfully. <br>
+         <strong>EXIT STRAIGHT</strong> only do the time check that 
          it finished the orientation adjustment and approximately 2 seconds later and then stop the forward motion.  <p> 
           <img src="../images/lab8/angle_action.png" alt="function(angle action)" width="550">
           <img src="../images/lab8/ori_control.png" alt="function(orientation control)" width="550">
 
         <p>However, when it got implemented in the run, it occurred that robot cannot precsely identify the 
           target orientation of 180 degrees from original orientation.Below are graphs from collected data 
-          points: Distance(), Speed with P control, and angle (degrees) VS time(). 
+          points: Distance(mm), Speed with P control, and angle (degrees) VS time(s). 
         </p>
         <a href="https://youtube.com/shorts/ZzbIwmk9TXA?si=saaI4yX7L87WiISa" target="_blank">
         Watch the video of car failing to return back...</a>
         <img src="../images/lab8/distance_graph.png" alt="smaller ODR rate" width="550">
         <img src="../images/lab8/speed_graph.png" alt="smaller ODR rate" width="550">
         <img src="../images/lab8/angle_graph.png" alt="smaller ODR rate" width="550">
-
-
-
-
-
-
-          
-
-        <p>Replacing F by Newton's second law of motion, I got two states for this model:</p>
-          <img src="../images/lab7/two_state.png" alt="smaller ODR rate" width="150">
-        <p>Using two states, I can estimate drag <strong> d </strong> and mass <strong> m </strong> from measuremnt
-          of steady input. The following is to solve this state space model. </p>
-          <img src="../images/lab7/solve_statespace.jpg" alt="smaller ODR rate" width="550">
-        <p>When calculating the speed using the position differences within small <strong>dt </strong>
-        , it occured that list of calculated speed stayed zero. To debug, I added <strong>Serial Print </strong>.</p>
-
-        <p>To get the steady state speed, I took data points from scatter version of plot. By intuition, I 
-          would get the linear segment of data right before the change of car direction due to avoid-crashing 
-          system. However, the speed after car started reacting to measured distance would not be steady state 
-          anymore. Therefore, I took data points before 650 mm (Setpoint 400mm + Interference Distance 250mm)
-          and get a steady state speed of <strong> 2425.6 mm/s</strong>. The 90% rise time is roughly
-        1.335s and the speed at that time is 2182.5 mm/s. Therefore, the drag is 0.412 kg/s, and the mass
-       of car system is 0.239 kg. </p> 
-       <img src="../images/lab7/cal_system.jpg" alt="Serial Print Code" width="650">
+       <p>The biggest hint from error graph is that the angle graph which I can see that 
+        robot keeps rotating regardless the existence of target orientation. Error did not converge 
+        to zero. It is possible that angle gets weird or cannot handle well when it comes to 180/-180
+        degrees even with the current handling with angle which makes angle error always within 180 from
+        fresh orientation. Another potential reason that angle got messed up is because I set the target orientation
+        is 180 degrees from the original which confused with discontinutity of angle range. <br> 
+       </p> 
+       <p>If I have more time working with it, I would want to try a way to only take account of 
+        how much angle it accumulated turning, potentially abandoning the direction of turning if possible.
+        It would be more realistic that taking off the oscillation in the angle graph, which basically measuring
+        turning towards one direction ONLY.  
+       </p>
 
 
       <h2>Reference </h2>
-      <p> Thanks to TA Jack Long and Trevor Dales for discussion about PID tuning, ODR rate adjustment, and  gain providing.<br> 
-          Thanks to Stephan's detailed orientation for DMP. <br>
-        I used chatGpt for clarifying questions, debugging such as code for eliminating hard-code gain in arduino. 
+      <p> Thanks to TA Jack Long for discussion about clearer structure of switching modes. <br>
+        I used chatGpt for debugging and brainstorming potential error happening. 
       </p>
   </div>   
 </body>
