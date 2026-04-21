@@ -76,7 +76,7 @@ code {
         <img src="../images/lab8/switch_1.png" alt="switch mode" width="550">
         <img src="../images/lab8/switch_2.png" alt="switch mode" width="550">
         <p>To enable robot to do a series of things step by step, I incorporated a switch-mode 
-         to have it do each thing step by step: <strong>APPROACH</strong>enables robot to approach the wall
+         to have it do each thing step by step: <strong>APPROACH</strong> enables robot to approach the wall
          to distance as close as 1 ft which is similiar to lab 5 and sets the goal of final orientation 
          as 180 degrees from the initial orientation. To ensure that the switching happens only 
          the robot at the appropriate position, switching of modes is inside the if statement for 
@@ -89,9 +89,15 @@ code {
           <img src="../images/lab8/angle_action.png" alt="function(angle action)" width="550">
           <img src="../images/lab8/ori_control.png" alt="function(orientation control)" width="550">
 
-
-
-
+        <p>However, when it got implemented in the run, it occurred that robot cannot precsely identify the 
+          target orientation of 180 degrees from original orientation.Below are graphs from collected data 
+          points: Distance(), Speed with P control, and angle (degrees) VS time(). 
+        </p>
+        <a href="https://youtube.com/shorts/ZzbIwmk9TXA?si=saaI4yX7L87WiISa" target="_blank">
+        Watch the video of car failing to return back...</a>
+        <img src="../images/lab8/distance_graph.png" alt="smaller ODR rate" width="550">
+        <img src="../images/lab8/speed_graph.png" alt="smaller ODR rate" width="550">
+        <img src="../images/lab8/angle_graph.png" alt="smaller ODR rate" width="550">
 
 
 
