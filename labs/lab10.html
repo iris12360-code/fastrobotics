@@ -68,8 +68,9 @@ code {
         <h2>Objective </h2>
 
         <p> 
-          The objective of this lab is to 
+        The objective of this lab is to implement grid localization using bayes filter. 
         </p>
+        <h2>Pre Lab</h2>
         <img src="../images/lab10/only_plot.png" alt="only plotting no moving" width="550">
         <p>I used to only plot without movement command which leads to plot seeing no movement
           of the robot but repeating of the same location. Therefore, I have movement command together
@@ -81,48 +82,67 @@ code {
           So that I get graph such as below: as we can see, there is quite difference between odometry and 
           ground truth. <strong>Odometry</strong> uses sensor data to estimate the change while<strong>
              Ground Truth</strong> basically
-          is the direct accurate measurement of the position in this case. 
-        </p>
-        <img src="../images/lab10/square.png" alt="square graph" width="550">
+          is the direct accurate measurement of the position in this case. <strong>Belief</strong> is the probability 
+          distribution across all the grid cells while <strong> Predicted Belief</strong> represents the tempoary
+          belief after prediction step before sensor model. </p>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <img src="../images/lab8/switch_2.png" alt="switch mode" width="550">
-        <p>To enable robot to do a series of things step by step, I incorporated a switch-mode 
-         to have it do each thing step by step: 
-         <strong>APPROACH</strong> enables robot to approach the wall
-         to distance as close as 1 ft which is similiar to lab 5 and sets the goal of final orientation 
-         as 180 degrees from the initial orientation. To ensure that the switching happens only 
-         the robot at the appropriate position, switching of modes is inside the if statement for 
-         position check.<br>
-        <strong>TURN ALIGH</strong> was evolved from a function of make a turn and a function
-         of orientation alignment like lab 6. I was experimenting with two modes doing these functions
-         following each other. However, the control of turning 180 degrees uses the orientation adjustment 
-         code snippet inevitably which is a bit redunant to the second function. Therefore, one mode should be 
-         able to achieve the goal successfully. <br>
-         <strong>EXIT STRAIGHT</strong> only do the time check that 
-         it finished the orientation adjustment and approximately 2 seconds later and then stop the forward motion.  <p> 
-          <img src="../images/lab8/angle_action.png" alt="function(angle action)" width="550">
-          <img src="../images/lab8/ori_control.png" alt="function(orientation control)" width="550">
-
-        <p>However, when it got implemented in the run, it occurred that robot cannot precsely identify the 
-          target orientation of 180 degrees from original orientation.Below are graphs from collected data 
-          points: Distance(mm), Speed with P control, and angle (degrees) VS time(s). 
-        </p>
-        <a href="https://youtube.com/shorts/ZzbIwmk9TXA?si=saaI4yX7L87WiISa" target="_blank">
-        Watch the video of car failing to return back...</a>
         
+        <img src="../images/lab10/square.png" alt="square graph" width="550">
+        <p>For close loop, I have while statement to constantly measure the distance at the front towards
+          the obstable. From multiple testing, I found out that it is appropriate to make the stop when it 
+          is about 0.25m away from the obstacle, which is neither too far from the wall nor too close to 
+          the wall so robot body's interaction with the wall change the path direction (when turning only 0.1 m away.)
+          The graph below was conducted in a velocity of 0.5m/s when 
+          the control of the displacement is pretty high. (the turn is instaneous without delaying in distance)
+          The highest speed robot can go at turning of 0.25 m away from obstable is 0.6m/s without crashing or
+          path direction changed. 
+          Through testing, the calculated turn of 90 degrees existed delaying which made the robot turn over 90
+          degrees, therefore I reduce the turning time. 
+        </p>
+        <img src="../images/lab10/close_graph_0.1_0.5.png" alt="square graph" width="550">
+        <p style="text-align: center;">Turn at 0.1 m at a speed of 0.5m/s.</p>
+        <img src="../images/lab10/close_graph_0.25_0.5.png" alt="square graph" width="550">
+        <p style="text-align: center;">Turn at 0.25 m at a speed of 0.5m/s.</p>
+        <img src="../images/lab10/close_graph_0.5_0.5.png" alt="square graph" width="550">
+        <p style="text-align: center;">Turn at 0.5 m at a speed of 0.5m/s.</p>
+
+        <h2>Helper function: Compute Control </h2>
+        <img src="../images/lab10/cc_code.png" alt="square graph" width="550">
+        <p>This step is to do the conversion for two poses from raw data to <strong>motion command form</strong>
+        in preparation for odometry motion model. In the context of this and following functions, 
+      poses refer to numpy arrays with elements (x,y,yaw). </p>
+        
+        <h2>Helper function: Odometrty Motion Model </h2>
+        <img src="../images/lab10/om_code.png" alt="square graph" width="550">
+        <p>Odometry motion model captures the probablity that robot can position in current pose from previous pose
+        based on given command u. because <strong>loc.odom_rot_sigma</strong> are in degrees, the unit conversion is 
+        needed. 
+        </p>
+        <h2>Helper function: Prediction Step </h2>
+        <img src="../images/lab10/prediction_lec17.png" alt="square graph" width="550">
+        <img src="../images/lab10/ps_code.png" alt="square graph" width="550">
+        <h2>Helper function: Sensor Model </h2>
+        <img src="../images/lab10/sm_code.png" alt="square graph" width="550">
+        <h2>Helper function: Update Step</h2>
+        <img src="../images/lab10/us_code.png" alt="square graph" width="550">
+
+        <h2>Helper function: Bayes Filter Implementation </h2>
+        <a href="https://youtube.com/shorts/CmKhbTtzDAM?si=Q0_GFLCKtjT3fLju" target="_blank">
+        Watch the video of simulating robot performed a non-collapse navigation.</a>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
        
 
 
