@@ -112,43 +112,52 @@ code {
         in preparation for odometry motion model. In the context of this and following functions, 
       poses refer to numpy arrays with elements (x,y,yaw). </p>
         
-        <h2>Helper function: Odometrty Motion Model </h2>
+        <h2>Helper function: Odometry Motion Model </h2>
         <img src="../images/lab10/om_code.png" alt="square graph" width="550">
-        <p>Odometry motion model captures the probablity that robot can position in current pose from previous pose
-        based on given command u. because <strong>loc.odom_rot_sigma</strong> are in degrees, the unit conversion is 
+        <p>Odometry motion model captures the probability that robot can position in current pose from previous pose
+        based on given command u. I used current poses and previous poses to estimate the ideal movement that robot could have taken and 
+        compare it with control input based on odometry. The higher similarity both turned out to be, the higher transitional possibility it is. 
+        Because <strong>loc.odom_rot_sigma </strong> are in degrees, the unit conversion is 
         needed. 
         </p>
+
         <h2>Helper function: Prediction Step </h2>
         <img src="../images/lab10/prediction_lec17.png" alt="square graph" width="550">
+        <p>To estimate every grid cell's transition proability, I used for loops to calculate them based on
+          equation on the second row above. <strong> u </strong> calculated the movement estimated by odometry 
+        which becomes control input here for the prediction. After having both previous and current poses converted
+        from grid index, I have each contribution from previous belief timing transition
+        probability from odometry motion model.  </p>
         <img src="../images/lab10/ps_code.png" alt="square graph" width="550">
+
         <h2>Helper function: Sensor Model </h2>
         <img src="../images/lab10/sm_code.png" alt="square graph" width="550">
+        <p>In sensor model, I calculated the chances that expected 360-degree scan matches with the real 
+          scan from simulator at a specific cell by Gaussian noise model.  
+
+        </p>
+        
         <h2>Helper function: Update Step</h2>
         <img src="../images/lab10/us_code.png" alt="square graph" width="550">
+        <p>Update Step function correct the predicted belief by bayes filter: cells would have higher probability
+          if their expected sensor readings match with actual data from sensor. Then it is normalized to have all the
+          probabilities suming to 1. 
+        </p>
 
-        <h2>Helper function: Bayes Filter Implementation </h2>
+        <h2>Bayes Filter Implementation </h2>
         <a href="https://youtube.com/shorts/CmKhbTtzDAM?si=Q0_GFLCKtjT3fLju" target="_blank">
         Watch the video of simulating robot performed a non-collapse navigation.</a>
-
-
-
-
-
-
-
-
-
-        
-
-
-
+        <img src="../images/lab10/bf_graph.png" alt="square graph" width="550">
+        <p>from the map, I can see that odometry did a bad job estimating the location changes. After fixing the unit conversion
+          and normalization 
+          and optimizing the computation, bayes filter does a decent job matching with ground truth. 
+        </p>
 
        
 
 
       <h2>Reference </h2>
-      <p> Thanks to TA Jack Long for discussion about clearer structure of switching modes. <br>
-        I used chatGpt for debugging and brainstorming potential error happening. 
+       <p>I referred to Selina Yao's and Trevor Dales' pages for debugging and understanding bayes filter. 
       </p>
   </div>   
 </body>
