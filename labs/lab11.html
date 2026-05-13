@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MAE 4190 – Lab 10</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.6em; margin-top: 40px; }
+    h3 { font-size: 1.3em; margin-top: 20px; }
+    p  { line-height: 1.6; }
+
+    img {
+      display: block;
+      margin: 20px auto;
+      max-width: 100%;
+    }
+
+    .code-block {
+  margin: 30px 0;
+}
+
+.code-header {
+  background-color: #eaeaea;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  font-family: monospace;
+  border-radius: 6px 6px 0 0;
+}
+
+.code-header span {
+  font-weight: bold;
+}
+
+.code-block pre {
+  margin: 0;
+  background-color: #f5f5f5;
+  padding: 16px;
+  overflow-x: auto;
+  border-radius: 0 0 6px 6px;
+}
+
+code {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.95em;
+}
+
+  </style>
+</head>
+
+<body>
+    <div class="content">
+
+    <h1>Lab 11：Localization on the real robot</h1>
+
+
+
+        <h2>Objective </h2>
+
+        <p> 
+        The objective of this lab is to perform localization with Bayes Filter on 
+        the actual robot. As in prediction step the robot motion is so noisy, Update
+        step will be used to based on 360 degree scans with TOF sensor. This lab code is 
+        mainly based on lab 9 code. 
+        </p>
+        <h2>Task One: Test Localization in Simulation</h2>
+        <img src="../images/lab11/sim_plot.png" alt="simulation plot" width="550">
+        <p> In the simulation, odometry is plotted in red; ground truth is in green; belief 
+          is in blue. As shown, odometry is very apparently off the ground truth as error accumulates
+          across each step. Instead, ground truth and belief look very familiar to each other, as Bayes filter
+          does a decent job in simulation. 
+        </p>
+        
+        <h2>Task Two: Bayes Filter on Robot</h2>
+        <p></p>
+
+        
+        <img src="../images/lab10/square.png" alt="square graph" width="550">
+        <p>
+        </p>
+
+
+        <h2>Helper function: Compute Control </h2>
+        <img src="../images/lab10/cc_code.png" alt="square graph" width="550">
+        <p>This step is to do the conversion for two poses from raw data to <strong>motion command form</strong>
+        in preparation for odometry motion model. In the context of this and following functions, 
+      poses refer to numpy arrays with elements (x,y,yaw). </p>
+        
+    
+
+        
+       
+
+       
+
+
+      <h2>Reference </h2>
+       <p>I referred to Selina Yao's and Trevor Dales' pages for debugging and understanding bayes filter. 
+      </p>
+  </div>   
+</body>
+</html>

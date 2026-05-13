@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MAE 4190 – Lab 10</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.6em; margin-top: 40px; }
+    h3 { font-size: 1.3em; margin-top: 20px; }
+    p  { line-height: 1.6; }
+
+    img {
+      display: block;
+      margin: 20px auto;
+      max-width: 100%;
+    }
+
+    .code-block {
+  margin: 30px 0;
+}
+
+.code-header {
+  background-color: #eaeaea;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  font-family: monospace;
+  border-radius: 6px 6px 0 0;
+}
+
+.code-header span {
+  font-weight: bold;
+}
+
+.code-block pre {
+  margin: 0;
+  background-color: #f5f5f5;
+  padding: 16px;
+  overflow-x: auto;
+  border-radius: 0 0 6px 6px;
+}
+
+code {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.95em;
+}
+
+  </style>
+</head>
+
+<body>
+    <div class="content">
+
+    <h1>Lab 12：Path Planning & Execution</h1>
+
+
+
+        <h2>Objective </h2>
+
+        <p> 
+        The objective of this lab is to plan the path in the lab map and scale and adjust the path
+        according to the performance.  I collabroated with Michelle Yang for this lab. We referred to 
+        Jeffery Cai's analysis for different methods for Lab 12, which especially analyzed pros and 
+        cons of open loop timing and using TOF readings directly. According to Michelle's friend Donghao Hong, it is not surprising that it would take time 
+        to adjust the position if TOF is integrated. As time is tight near the final, we decided to move
+        on with open loop for straight running and PID control by IMU for steering, to save time which get sacrificed
+        for adjusting distances and also consuming battery. In many tests for lab 11, it showed the battery consumption 
+        can be a problem to delay the progress of lab. </p>
+
+        
+         <h2>Code Snippet: Calibration</h2>
+        <img src="../images/lab12/cali.png" alt="square graph" width="550">
+        <p>To test efficiently, two calibrations were conducted. One is to quantify the distance that Robot displaces within
+          one second in PWM of 100. Based on our final running test, the distance is 5 feet 1 inch. With this calibration, we can 
+          calculate the time set for each step for later navigation, which is quite convenient. Another one is for turning to 
+          check how much the actual turning deviates from the target angle. 
+
+        </p>
+        <h2>Code Snippet: Local Path Planning</h2>
+        <img src="../images/lab12/drive_open_loop.png" alt="square graph" width="550">
+        <p>In the case <strong> drive_open_loop</strong>, command includes information in PWM value and 
+          duration time instead of direct distance. Besides, to avoid interference from PID control for turning and 
+          conduct open loop control, PID was temporarily turned off. Because we are doing a open loop,
+          robot does not check if it has been the location that it should be. Instead, it just assume it is at the right 
+          location and continue to next step. While robot is running, it is not completely "blind." It keeps collecting yaw as 
+          it provides accurate orientation information at the beginning of each turn session (also the end
+          of a straight-line-running session) and take the current yaw as the new orientation starting point to avoid 
+          inaccurate correction. 
+        </p>
+
+        <h2>Code Snippet: Feedback Control</h2>
+        <img src="../images/lab12/feedback.png" alt="square graph" width="550">
+        <p>To adjust angles smoothly at specific positions, we used proportional control to make the turn. To improve the efficiency,
+          of the path, angle error was wrapped to present a short-path turn. 
+        </p>
+
+        <h2>Code Snippet: Waypoint Planner</h2>
+        <img src="../images/lab12/waypoint_1.png" alt="square graph" width="550">
+        <img src="../images/lab12/waypoint_2.png" alt="square graph" width="550">
+        <p>This is Arduino code for execution. <strong>Plan_leg</strong> is a funny function Michelle 
+        named for calculating the movement to next waypoint. Instead of manually calculating, the direction &
+        distances are both calculated by code: based on current and target location pins, <strong>desired</strong>
+        is the orientation that robot should face in, while <strong>delta</strong> is angle that robot needs to turn 
+      . Besides, <strong>dist</strong>is the distance Robot open-loop runs at. 
+        Then we do the conversion from distance to estimated time. Then execute the steps while using
+        <strong>wait</strongs>pauses the python side running. In constrast, <strong>delay</strong>would freeze the 
+        arduino instead. <br></p>
+        <p>Because this is open  
+       loop in displacement, there are tunings needed for specific steps. Through multiple
+        runs, we came to conclusions about which steps needs to tune down or up.</p>
+        <img src="../images/lab12/tuning.png" alt="square graph" width="550">
+
+
+        <h2>Path Navigation Performance</h2>
+        <a href="" target="_blank">
+        Watch the video of Robot successfully executing the open-loop navigation.</a>
+        <p> We took many trials to make this close-to-perfect run happening. I think the cons of 
+          open loop distance control is error happening randomly can interrupt the performance easily. 
+        </p>
+        
+
+
+
+      <h2>Reference </h2>
+       <p>I </p>
+  </div>   
+</body>
+</html>
