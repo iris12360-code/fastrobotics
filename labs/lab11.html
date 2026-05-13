@@ -82,17 +82,34 @@ code {
         </p>
         
         <h2>Task Two: Bayes Filter on Robot</h2>
-        <p></p>
-
-        
+        <p>As provided code has already offered localization program which covers
+          bayes filter calculation, I was writing to make robot perform a 360-degree scan and
+          send ToF measurements back to python. The whole process includes commanding robot to rotate collecting
+          distance readings, converting them to required format and having them compared with
+          expected readings contained in localization code. 
+          </p>
         <img src="../images/lab11/ob_loop_1.png" alt="square graph" width="550">
         <img src="../images/lab11/ob_loop_2.png" alt="square graph" width="550">
-        <p>
+        <p> The code here basically is translated from lab 9. The function acts as the linkage
+          between sensor acquisition and probaility localization. It sends a command and 
+          starts the robot rotation motion 
+          to read distances across different orientations. Similarly, it checks if the number of
+          collection hits its range and waits for data ready to be collected at the same time. A timeout
+          section is added to prevent infinite waiting once robot cannot complete the 360-degree scan.
+          After receiving data, function converts distance measurments from millimeters to feet
+          and lists into numpy column arrays which match the input format for bayes filter update
+          step. <br>
+          Unfortunately, my robot cannot consistently collect 18 data while rotating 360 degrees. 
+          The potential reason is that TOF polling was interfered with motor motion. When collection
+          data gets compiled into list, data is not ready. Therefore, I failed to localize the robot
+           in the map. 
+
+
         </p>
 
 
-        <h2></h2>
-        <img src="../images/lab10/cc_code.png" alt="square graph" width="550">
+        
+        
         <p></p>
         
     
@@ -104,7 +121,9 @@ code {
 
 
       <h2>Reference </h2>
-       <p> 
+       <p> Thanks for Zoey Zhou, Michelle Yang and Selena to help me debug the robot rotation. 
+        I used ChatGPT to clarify some confusion regarding function <strong>perform_observation_loop  
+        </strong>.
       </p>
   </div>   
 </body>
