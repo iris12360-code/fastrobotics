@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MAE 4190 – Lab 11</title>
+  <title>MAE 4190 – Lab 9</title>
 
   <style>
     body {
@@ -61,34 +61,29 @@ code {
 <body>
     <div class="content">
 
-    <h1>Lab 11：Localization on the real robot</h1>
+    <h1>Lab 9：Mapping</h1>
 
 
 
         <h2>Objective </h2>
 
         <p> 
-        The objective of this lab is to perform localization with Bayes Filter on 
-        the actual robot. As in prediction step the robot motion is so noisy, Update
-        step will be used to based on 360 degree scans with TOF sensor. This lab code is 
-        mainly based on lab 9 code. 
+        The objective of this lab is to map out a static room. 
         </p>
-        <h2>Task One: Test Localization in Simulation</h2>
-        <img src="../images/lab11/sim_plot.png" alt="simulation plot" width="550">
-        <p> In the simulation, odometry is plotted in red; ground truth is in green; belief 
-          is in blue. As shown, odometry is very apparently off the ground truth as error accumulates
-          across each step. Instead, ground truth and belief look very familiar to each other, as Bayes filter
-          does a decent job in simulation. 
+        <h2>Orientation Control</h2>
+        <img src="../images/lab9/code_1.png" alt="simulation plot" width="550">
+        
+        
+        <img src="../images/lab9/tof_reading.png" alt="simulation plot" width="550">
+        <img src="../images/lab9/loop_1.png" alt="simulation plot" width="550">
+        <img src="../images/lab9/loop_2.png" alt="simulation plot" width="550">
+        <p> 
         </p>
         
         <h2>Task Two: Bayes Filter on Robot</h2>
         <p></p>
 
         
-        <img src="../images/lab11/ob_loop_1.png" alt="square graph" width="550">
-        <img src="../images/lab11/ob_loop_2.png" alt="square graph" width="550">
-        <p>
-        </p>
 
 
         <h2>Helper function: Compute Control </h2>
