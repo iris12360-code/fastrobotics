@@ -102,22 +102,15 @@ code {
           Unfortunately, my robot cannot consistently collect 18 data while rotating 360 degrees. 
           The potential reason is that TOF polling was interfered with motor motion. When collection
           data gets compiled into list, data is not ready. Therefore, I failed to localize the robot
-           in the map. 
-
+           in the map. In theory, Bayes localization relies on probability distribution as robot motion
+           and sensor data are noisy. For example, wheel interaction with ground, battery voltage and 
+           ble communication timing are all differentiating the real motion from simulation. Errors in observations 
+           can result from robot motion system (such 
+           as overshoot,) time delays, TOF polling delay. In simulation, sensor measurements and 
+           robot motion gets idealized. In my case, invalid readings severely affect distance readings
+           as Bayes update step interprets reading as actual measurement of distance to the wall.
 
         </p>
-
-
-        
-        
-        <p></p>
-        
-    
-
-        
-       
-
-       
 
 
       <h2>Reference </h2>
